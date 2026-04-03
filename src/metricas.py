@@ -32,10 +32,11 @@ def calcular_fc_desde_datos(datos: list) -> float:
     senal=[]
     for d in datos:
         tiempos.append(d["tiempo"])
-        senal.append(d["senal"])
+        senal.append(d["valor"])
 
     picos = detectar_picos_qrs(tiempos, senal)
     return calcular_frecuencia_cardiaca(picos)
+
 def calcular_minimo_senal(datos: list) -> float:
     """
     calcula el valor mínimo de la señal ECG.
@@ -49,6 +50,7 @@ def calcular_minimo_senal(datos: list) -> float:
         valores.append(dato["valor"])
     minimo = min(valores)
     return minimo
+
 def calcular_maximo_senal(datos: list) -> float:
     """
     calcula el valor máximo de la señal ECG.
@@ -62,6 +64,7 @@ def calcular_maximo_senal(datos: list) -> float:
         valores.append(dato["valor"])
     maximo = max(valores)
     return maximo
+
 def calcular_amplitud_senal(datos: list) -> float:
     """
     calcula la amplitud de la señal ECG.
@@ -71,10 +74,10 @@ def calcular_amplitud_senal(datos: list) -> float:
     retorna:
     float: la amplitud de la señal.
     """
-    valoress = []
+    valores = []
     for d in datos:
-        valoress.append(d["valor"])
-    minimo = min(valoress)
-    maximo = max(valoress)
+        valores.append(d["valor"])
+    minimo = min(valores)
+    maximo = max(valores)
     amplitud = maximo - minimo #suponiendo que la amplitud es esto 
     return amplitud

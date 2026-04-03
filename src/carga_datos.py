@@ -61,7 +61,6 @@ def to_float_or_str(dato):
     except ValueError:
         return dato
 
-print(parsear_linea("1, hola.gr, hola, 93.3"))
 # Cargar Datos
 
 def cargar_datos(ruta:str)->list:

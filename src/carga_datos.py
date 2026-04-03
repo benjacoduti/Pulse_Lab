@@ -1,13 +1,13 @@
 # Abrir Archivo
 
 def abrir_archivo(ruta:str)->list:
-    '''
-    
+    """
+
     Recibe la ruta de un archivo;
     Abre el archivo para poder leerlo;
-    Luego cierra el archivo y devuelve las lineas
-    
-    #!!! El archivo es de tipo csv y contiene todos los datos ordenados, sin
+    Luego cierra el archivo y devuelve las líneas
+
+    #!! !El archivo es de tipo csv y contiene todos los datos ordenados, sin
     #ninguno faltante
 
     Parameters
@@ -19,8 +19,8 @@ def abrir_archivo(ruta:str)->list:
     -------
     lineas : list
         Lista que contiene strings correspondientes a las filas del archivo
-        
-    '''
+
+    """
     archivo = open(ruta,"r")
     lineas = archivo.readlines()
     archivo.close()
@@ -30,45 +30,49 @@ def abrir_archivo(ruta:str)->list:
 # Parsear Datos
 
 def parsear_linea(linea:str)->list:
-    '''
-    
+    """
+
     Recibe una línea de un archivo y la devuelve modificada;
-    Se encarga de separar la línea en campos y convertir la data en el tipo 
+    Se encarga de separar la línea en campos y convertir la data en el tipo
     que corresponde
 
     Parameters
     ----------
     linea : str
-        Linea que será parseada
+        Línea que será parseada
 
     Returns
     -------
     linea_parseada : list
         Lista que contiene los datos convertidos de la lista parseada
 
-    '''
+    """
     linea_parseada = []
     linea = linea.strip("\n")
     data_linea = linea.split(",") #!!! split con (",") o (";") ?
     
     for dato in data_linea:
-        if dato.isdigit() == True:
-            dato = int(dato)            
-        linea_parseada.append(dato)            
-    
+        linea_parseada.append(to_float_or_str(dato))
     return linea_parseada
 
+def to_float_or_str(dato):
+    try:
+        return float(dato)
+    except ValueError:
+        return dato
+
+print(parsear_linea("1, hola.gr, hola, 93.3"))
 # Cargar Datos
 
 def cargar_datos(ruta:str)->list:
-    '''
-    
-    Recibe la ruta de un archivo y se la envía a la función abrir_archivo para que extraiga 
+    """
+
+    Recibe la ruta de un archivo y se la envía a la función abrir_archivo para que extraiga
     la información;
-    Luego, por cada línea de información, llama a la función parsear_linea para poder 
-    castear los diferentes tipos de datos y eliminar impurezas de la linea;
+    Luego, por cada línea de información, llama a la función parsear_linea para poder
+    castear los diferentes tipos de datos y eliminar impurezas de la línea;
     Finalmente, genera un diccionario con un registro de los participantes
-    por cada participante con distinto id, y lo actualiza hasta finalizar el recorrido 
+    por cada participante con distinto id, y lo actualiza hasta finalizar el recorrido
     de las líneas del archivo.
     Guarda los registros de los participantes en una lista y la devuelve
 
@@ -81,13 +85,13 @@ def cargar_datos(ruta:str)->list:
     -------
     datos : list
         Lista que contiene diccionarios con los datos divididos por participantes;
-        #!!! Hace falta agregar qué contiene? 
+        #!!! Hace falta agregar qué contiene?
 
-    '''
+    """
     datos = []
-    flag = None                             # Flag creada para la posterior comparación entre id's
+    id_anterior = None                             # Flag creada para la posterior comparación entre id's
     i = 1                                   # No tomamos en cuenta los headings
-    lineas = abrir_archivo(ruta)            #!!! En el diagrama de flujo se llama abrir_open(ruta)
+    lineas = abrir_archivo(ruta)
     
     while i < len(lineas):
         linea_parseada = parsear_linea(lineas[i])
@@ -102,9 +106,10 @@ def cargar_datos(ruta:str)->list:
         fase = linea_parseada[3]
         condicion_experimental = linea_parseada[4]
         hit = linea_parseada[5]
-        
+
+
         #Creación del diccionario
-        if i_d not in datos and i_d != flag:
+        if i_d != id_anterior:
             registro_participante = {}          # Quitando el id, el resto de valores se guarda en listas
             
             registro_participante["id"] = i_d
@@ -114,11 +119,11 @@ def cargar_datos(ruta:str)->list:
             registro_participante["condicion_experimental"] = [condicion_experimental]
             registro_participante["hit"] = [hit]
             
-            flag = i_d
+            id_anterior = i_d
             datos.append(registro_participante)
         
         # Actualización del diccionario
-        elif i_d == flag:
+        else:
             registro_participante["tiempo"].append(tiempo)
             registro_participante["valor"].append(valor)
             registro_participante["fase"].append(fase)

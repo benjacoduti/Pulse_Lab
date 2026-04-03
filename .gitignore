@@ -205,3 +205,12 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+#IntelliJ
+#  IntelliJ specific template is maintained in a separate IntelliJ.gitignore
+.idea
+
+#MacOS
+**/.DS_Store
+.DS_Store
+DS_Store

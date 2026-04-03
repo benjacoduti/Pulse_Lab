@@ -53,10 +53,8 @@ def parsear_linea(linea:str)->list:
     
     for dato in data_linea:
         if dato.isdigit() == True:
-            dato = int(dato)
-            linea_parseada.append(dato)
-        else:
-            linea_parseada.append(dato)            
+            dato = int(dato)            
+        linea_parseada.append(dato)            
     
     return linea_parseada
 

@@ -35,4 +35,4 @@ def calcular_fc_desde_datos(datos: list) -> float:
         senal.append(d["senal"])
 
     picos = detectar_picos_qrs(tiempos, senal)
-    return calcular_frecuencia_cardiaca(picos)
+    return calcular_frecuencia_cardiaca(picos)def calcular_minimo_senal(datos: list) -> float:

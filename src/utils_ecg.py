@@ -5,9 +5,7 @@ def detectar_picos_qrs(tiempos: list, senal: list, umbral: float = 0.9, distanci
     - tiempos: lista de tiempos
     - senal: lista de valores de la señal
     - umbral: valor mínimo para considerar un pico
-    - distancia
-    _
-    minima: tiempo mínimo entre picos
+    - distancia minima: tiempo mínimo entre picos
     Retorna:
     - lista de tiempos donde ocurren los picos
     """

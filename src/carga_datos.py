@@ -1,8 +1,9 @@
+from src.validacion_datos import to_float_or_str
+
 # Abrir Archivo
 
 def abrir_archivo(ruta:str)->list:
     """
-
     Recibe la ruta de un archivo;
     Abre el archivo para poder leerlo;
     Luego cierra el archivo y devuelve las líneas
@@ -31,7 +32,6 @@ def abrir_archivo(ruta:str)->list:
 
 def parsear_linea(linea:str)->list:
     """
-
     Recibe una línea de un archivo y la devuelve modificada;
     Se encarga de separar la línea en campos y convertir la data en el tipo
     que corresponde
@@ -55,17 +55,10 @@ def parsear_linea(linea:str)->list:
         linea_parseada.append(to_float_or_str(dato))
     return linea_parseada
 
-def to_float_or_str(dato):
-    try:
-        return float(dato)
-    except ValueError:
-        return dato
-
 # Cargar Datos
 
 def cargar_datos(ruta:str)->list:
     """
-
     Recibe la ruta de un archivo y se la envía a la función abrir_archivo para que extraiga
     la información;
     Luego, por cada línea de información, llama a la función parsear_linea para poder
@@ -88,8 +81,8 @@ def cargar_datos(ruta:str)->list:
 
     """
     datos = []
-    id_anterior = None                             # Flag creada para la posterior comparación entre id's
-    i = 1                                   # No tomamos en cuenta los headings
+    id_anterior = None # Flag creada para la posterior comparación entre id's
+    i = 1 # No tomamos en cuenta los headings
     lineas = abrir_archivo(ruta)
     
     while i < len(lineas):
@@ -109,7 +102,7 @@ def cargar_datos(ruta:str)->list:
 
         #Creación del diccionario
         if i_d != id_anterior:
-            registro_participante = {}          # Quitando el id, el resto de valores se guarda en listas
+            registro_participante = {} # Quitando el id, el resto de valores se guarda en listas
             
             registro_participante["id"] = i_d
             registro_participante["tiempo"] = [tiempo]

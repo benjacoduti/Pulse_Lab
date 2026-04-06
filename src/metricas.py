@@ -37,6 +37,37 @@ def calcular_fc_desde_datos(datos: list) -> float:
     picos = detectar_picos_qrs(tiempos, senal)
     return calcular_frecuencia_cardiaca(picos)
 
+def calcular_promedio_senal(datos: list) -> float:
+    '''
+    Recibe un lista de los registros de los participantes, analiza sus datos y guarda las señales de cada participante.
+    Finalmente, calcula un promedio de señales totales en base a los datos de todos los participantes.
+
+    Parameters
+    ----------
+    datos : list
+        lista con registros de participantes
+
+    Returns
+    -------
+    promedio : float
+        Promedio de señales totales
+
+    '''
+    
+    lista_senales = []
+    i = 0
+    
+    while i < len(datos):
+        
+        valores = datos[i]["valores"]    
+        lista_senales.extend(valores)
+        i += 1 
+        
+    promedio = sum(lista_senales) / len(lista_senales)
+    
+    return(promedio)
+
+
 def calcular_minimo_senal(datos: list) -> float:
     """
     Calcula el valor mínimo de la señal ECG.

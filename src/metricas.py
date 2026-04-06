@@ -31,7 +31,7 @@ def calcular_fc_desde_datos(datos: list) -> float:
     tiempos=[]
     senal=[]
     for d in datos:
-        tiempos.append(d["tiempo"])
+        tiempos.append(d["tiempo"]) # se puede usar .extend
         senal.append(d["valor"])
 
     picos = detectar_picos_qrs(tiempos, senal)

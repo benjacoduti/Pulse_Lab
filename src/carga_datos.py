@@ -8,7 +8,7 @@ def abrir_archivo(ruta:str)->list:
     Abre el archivo para poder leerlo;
     Luego cierra el archivo y devuelve las líneas
 
-    #!! !El archivo es de tipo csv y contiene todos los datos ordenados, sin
+    El archivo es de tipo csv y contiene todos los datos ordenados, sin
     #ninguno faltante
 
     Parameters
@@ -87,18 +87,13 @@ def cargar_datos(ruta:str)->list:
     
     while i < len(lineas):
         linea_parseada = parsear_linea(lineas[i])
-        
-        # !!! Se podría hacer más fácil con esto? Lo pensé, pero no encontré manera de crear listas donde se requiere
-        #headings = linea_parseada = parsear_linea(lineas[0])
-        #registro_participantes.keys(), registro_participantes.values() = headings, linea_parseada
-        
+
         i_d = linea_parseada[0]
         tiempo = linea_parseada[1]
         valor = linea_parseada[2]
         fase = linea_parseada[3]
         condicion_experimental = linea_parseada[4]
         hit = linea_parseada[5]
-
 
         #Creación del diccionario
         if i_d != id_anterior:

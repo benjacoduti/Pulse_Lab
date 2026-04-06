@@ -10,11 +10,12 @@ def detectar_picos_qrs(tiempos: list, senal: list, umbral: float = 0.9, distanci
     - lista de tiempos donde ocurren los picos
     """
     tiempos_picos=[]
-    for i in range(len(tiempos)):
-        if senal[i] >= umbral:
-            if len(tiempos_picos)==0:
-                tiempos_picos.append(tiempos[i])
-            elif tiempos[i] - tiempos_picos[-1] > distancia_minima:
-                tiempos_picos.append(tiempos[i])
+    for i in range(len(tiempos)): # se puede usar .extend
+        for k in range(len(tiempos[i])):
+            if senal[i][k] >= umbral:
+                if len(tiempos_picos)==0:
+                    tiempos_picos.append(tiempos[i][k])
+                elif tiempos[i][k] - tiempos_picos[-1] > distancia_minima:
+                    tiempos_picos.append(tiempos[i][k])
 
     return tiempos_picos

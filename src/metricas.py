@@ -39,45 +39,51 @@ def calcular_fc_desde_datos(datos: list) -> float:
 
 def calcular_minimo_senal(datos: list) -> float:
     """
-    calcula el valor mínimo de la señal ECG.
-    parmetr.:
-    datos (list): lista de diccionarios, donde cada diccionario contiene un valor de señal en la clave valor
-    retorna:
-    float: el valor mínimo de la señal.
+    Calcula el valor mínimo de la señal ECG.
+    Parmetr.:
+    datos : (list)
+        Lista de diccionarios, donde cada diccionario contiene un valor de señal en la clave valor
+    Retorna:
+    minimo : float
+        El valor mínimo de la señal.
     """
-    valores = []
+    valores_minimos = []
     for dato in datos:
-        valores.append(dato["valor"])
-    minimo = min(valores)
+        valores_minimos.append(min(dato["valor"]))
+        
+    minimo = min(valores_minimos)
     return minimo
 
 def calcular_maximo_senal(datos: list) -> float:
     """
-    calcula el valor máximo de la señal ECG.
-    parametros:
-    datos (list): lista de diccionarios, donde cada diccionario contiene un valor de señal en la clave "valor".
-    retorna:
-    float: el valor máximo de la señal.
+    Calcula el valor máximo de la señal ECG.
+    Parametros:
+    datos : list
+           Lista de diccionarios, donde cada diccionario contiene un valor de señal en la clave "valor".
+    Retorna:
+    maximo : float
+        El valor máximo de la señal.
     """
-    valores = []
+    valores_maximos = []
     for dato in datos:
-        valores.append(dato["valor"])
-    maximo = max(valores)
+        valores_maximos.append(max(dato["valor"]))
+    
+    maximo = max(valores_maximos)
     return maximo
 
-def calcular_amplitud_senal(datos: list) -> float:
+def calcular_amplitud_senal(maximo, minimo) -> float:
     """
-    calcula la amplitud de la señal ECG.
-    la amplitud se define como la diferencia entre el valor máximo y el valor mínimo.
-    parmet.:
-    datos (list): lista de diccionarios, donde cada diccionario contiene un valor de señal en la clave "valor".
-    retorna:
-    float: la amplitud de la señal.
+    Calcula la amplitud de la señal ECG.
+    La amplitud se define como la diferencia entre el valor máximo y el valor mínimo.
+    Parmet.:
+    maximo : int/float
+        Mínima señal de entre los participantes analizados
+    minimo : int/float
+        Mínima señal de entre los participantes analizados
+    Retorna:
+    amplitud : float
+        La amplitud de la señal.
     """
-    valores = []
-    for d in datos:
-        valores.append(d["valor"])
-    minimo = min(valores)
-    maximo = max(valores)
+
     amplitud = maximo - minimo #suponiendo que la amplitud es esto 
     return amplitud

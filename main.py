@@ -1,18 +1,18 @@
-from src.carga_datos import *
-from src.metricas import *
+from src.carga_datos import cargar_datos
+from src.metricas import calcular_fc_desde_datos, calcular_maximo_senal, calcular_minimo_senal, calcular_amplitud_senal
 from src.procesamiento_datos import *
 from src.validacion_datos import *
 
 ruta = './datos/datos_proyecto.csv'
-id = '001'
+i_d = '001'
 
 datos = cargar_datos(ruta)
 
 promedio = calcular_promedio(datos)
-participante = filtrar_por_participante(datos, id)
+participante = filtrar_por_participante(datos, i_d)
 fc = calcular_fc_desde_datos(datos)
-senal_max, senal_min = calcular_max_min(datos)
-amplitud = calcular_amplitud(senal_max, senal_min)
+senal_max, senal_min = calcular_maximo_senal(datos), calcular_minimo_senal(datos)
+amplitud = calcular_amplitud_senal(senal_max, senal_min)
 
 print(f'El promedio de la senal es: {promedio}')
 print(f'Se encontro a un participante con el id {id}')

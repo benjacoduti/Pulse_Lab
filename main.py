@@ -4,7 +4,7 @@ from src.procesamiento_datos import filtrar_por_participante
 from src.validacion_datos import *
 
 ruta = './datos/datos_proyecto.csv'
-i_d = '001'
+i_d = 1
 
 datos = cargar_datos(ruta)
 

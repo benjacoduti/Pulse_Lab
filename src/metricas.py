@@ -62,7 +62,7 @@ def calcular_promedio_senal(datos: list) -> float:
     
     while i < len(datos):
         
-        valores = datos[i]["valores"]    
+        valores = datos[i]["valor"]
         lista_senales.extend(valores)
         i += 1 
         

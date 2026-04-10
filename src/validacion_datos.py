@@ -21,7 +21,7 @@ def validar_dato(dato, i):
         except ValueError:
             raise ValueError(f"El dato en la posición {i+1} no es del tipo especificado - Se detectó en validar dato")
         else:
-            if dato <= 0:
+            if dato < 0:
                 raise ValueError(f"El dato en la posición {i+1} es negativo - Se detectó en validar_dato")
             else:
                 return dato

@@ -17,7 +17,6 @@ print(f'El promedio de la senal es: {promedio}')
 print(f'La frequencia cardiaca promedio es de {fc}Hz')
 print(f'El maximo de la señal es de {senal_max} y el minimo es de {senal_min}')
 
-
 try:
     participante = filtrar_por_participante(datos, i_d)
 except Exception as e:

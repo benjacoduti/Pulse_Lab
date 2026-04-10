@@ -1,4 +1,4 @@
-from src.validacion_datos import to_float_or_str
+from src.validacion_datos import validar_dato
 
 # Abrir Archivo
 
@@ -9,7 +9,7 @@ def abrir_archivo(ruta:str)->list:
     Luego cierra el archivo y devuelve las líneas
 
     El archivo es de tipo csv y contiene todos los datos ordenados, sin
-    #ninguno faltante
+    ninguno faltante
 
     Parameters
     ----------
@@ -45,14 +45,19 @@ def parsear_linea(linea:str)->list:
     -------
     linea_parseada : list
         Lista que contiene los datos convertidos de la lista parseada
-
     """
     linea_parseada = []
     linea = linea.strip("\n")
     data_linea = linea.split(",") #!!! split con (",") o (";") ?
     
+    i = 0
+    
     for dato in data_linea:
-        linea_parseada.append(to_float_or_str(dato))
+        
+        dato = validar_dato(dato,i)
+        linea_parseada.append(dato)
+        i += 1
+        
     return linea_parseada
 
 # Cargar Datos
@@ -82,13 +87,13 @@ def cargar_datos(ruta:str)->list:
     """
     datos = []
     id_anterior = None # Flag creada para la posterior comparación entre id's
-    i = 1 # No tomamos en cuenta los headings
+    i = 0
     lineas = abrir_archivo(ruta)
     
     while i < len(lineas):
         linea_parseada = parsear_linea(lineas[i])
 
-        i_d = int(linea_parseada[0])
+        i_d = (linea_parseada[0])
         tiempo = linea_parseada[1]
         valor = linea_parseada[2]
         fase = linea_parseada[3]
@@ -120,4 +125,3 @@ def cargar_datos(ruta:str)->list:
         i+=1
     
     return datos
-        

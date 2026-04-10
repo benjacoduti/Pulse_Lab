@@ -88,7 +88,7 @@ def cargar_datos(ruta:str)->list:
     while i < len(lineas):
         linea_parseada = parsear_linea(lineas[i])
 
-        i_d = linea_parseada[0]
+        i_d = int(linea_parseada[0])
         tiempo = linea_parseada[1]
         valor = linea_parseada[2]
         fase = linea_parseada[3]

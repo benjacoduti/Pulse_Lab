@@ -54,8 +54,5 @@ def validar_dato(dato, i):
                 return False
             else:
                 raise ValueError
-    except ValueError as e:
-        if e is None:
-            raise  ValueError(f"El dato en la posicion {i+1} no es del tipo especificado")
-        else:
-            raise e
+    except ValueError:
+        raise  ValueError(f"El dato en la posicion {i+1} no es del tipo especificado")

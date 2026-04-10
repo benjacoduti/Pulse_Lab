@@ -9,6 +9,14 @@ def detectar_picos_qrs(tiempos: list, senal: list, umbral: float = 0.9, distanci
     Retorna:
     - lista de tiempos donde ocurren los picos
     """
+    if umbral <= 0:
+    
+        raise ValueError ("El umbral no puede ser menor o igual a 0 - El error proviene de la funcion detectar_picos_qrs")
+    
+    if distancia_minima <= 0:
+        
+        raise ValueError("La distancia minima no puede ser menor o igual a 0 - El error proviene de la funcion detectar_picos_qrs")
+    
     tiempos_picos=[]
     for i in range(len(tiempos)): # se puede usar .extend
         for k in range(len(tiempos[i])):

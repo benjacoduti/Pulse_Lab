@@ -1,7 +1,4 @@
-from src.validacion_datos import to_float_or_str
-
 # Abrir Archivo
-
 def abrir_archivo(ruta:str)->list:
     """
     Recibe la ruta de un archivo;
@@ -22,14 +19,18 @@ def abrir_archivo(ruta:str)->list:
         Lista que contiene strings correspondientes a las filas del archivo
 
     """
-    archivo = open(ruta,"r")
-    lineas = archivo.readlines()
-    archivo.close()
-    
-    return lineas
+    if ruta is None or ruta == "":
+        raise ValueError("La ruta de archivo no es valido - Se detectó en abrir_archivo")
+    try:
+        archivo = open(ruta,"r")
+        lineas = archivo.readlines()
+        archivo.close()
+    except FileNotFoundError:
+        raise FileNotFoundError("No se encuentra el archivo - Se detectó en abrir_archivo")
+    else:
+        return lineas
 
 # Parsear Datos
-
 def parsear_linea(linea:str)->list:
     """
     Recibe una línea de un archivo y la devuelve modificada;
@@ -56,7 +57,6 @@ def parsear_linea(linea:str)->list:
     return linea_parseada
 
 # Cargar Datos
-
 def cargar_datos(ruta:str)->list:
     """
     Recibe la ruta de un archivo y se la envía a la función abrir_archivo para que extraiga
@@ -120,4 +120,3 @@ def cargar_datos(ruta:str)->list:
         i+=1
     
     return datos
-        

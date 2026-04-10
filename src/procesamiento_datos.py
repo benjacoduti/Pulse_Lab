@@ -29,4 +29,4 @@ def filtrar_por_participante(datos: list, id_participante: int) -> dict:
             i += 1
     
     raise Exception("No se encontro participante alguno con el id ingresado - Se detectó en filtrar_por_participante")
-            
+

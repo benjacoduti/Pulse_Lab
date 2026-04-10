@@ -10,14 +10,17 @@ def calcular_frecuencia_cardiaca(picos: list) -> float:
         -float con la frequencia de estos eventos.
     """
     if len(picos) < 2:
-        raise Exception("El numero de picos debe ser mayor que 2")
+        raise Exception("El numero de picos debe ser mayor que 2, se detecto en calcular_frecuencia_cardiaca")
     else:
-        periodos = []
-        for i in range(len(picos) - 1):
-            periodos.append(picos[i + 1] - picos[i])
-        promedio = sum(periodos) / len(periodos)
-        return 1 / promedio #La frequencia la calculamos como 1 sobre el promedio de distancia entre picos
-
+            periodos = []
+            for i in range(len(picos) - 1):
+                periodos.append(picos[i + 1] - picos[i])
+            promedio = sum(periodos) / len(periodos)
+            try:
+                return 1 / promedio #La frequencia la calculamos como 1 sobre el promedio de distancia entre picos
+            except:
+                raise ZeroDivisionError("Se dividió por 0 debido a que la distancia promedio entre picos es 0, se detectó en calcular_frecuencia_cardiaca")
+            
 def calcular_fc_desde_datos(datos: list) -> float:
     """
     Recibe una lista de diccionarios correspondientes a cada participante.

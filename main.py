@@ -1,14 +1,14 @@
 from src.carga_datos import cargar_datos
-from src.metricas import calcular_fc_desde_datos, calcular_maximo_senal, calcular_minimo_senal, calcular_amplitud_senal, calcular_promedio
+from src.metricas import calcular_fc_desde_datos, calcular_maximo_senal, calcular_minimo_senal, calcular_amplitud_senal, calcular_promedio_senal
 from src.procesamiento_datos import filtrar_por_participante
 from src.validacion_datos import *
 
-ruta = './datos/datos_proyecto.csv'
+ruta = './datos/PulseLab_mock_data.csv'
 i_d = 1
 
 datos = cargar_datos(ruta)
 
-promedio = calcular_promedio(datos)
+promedio = calcular_promedio_senal(datos)
 fc = calcular_fc_desde_datos(datos)
 senal_max, senal_min = calcular_maximo_senal(datos), calcular_minimo_senal(datos)
 amplitud = calcular_amplitud_senal(senal_max, senal_min)

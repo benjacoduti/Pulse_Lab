@@ -1,7 +1,6 @@
 from src.carga_datos import cargar_datos
 from src.metricas import calcular_fc_desde_datos, calcular_maximo_senal, calcular_minimo_senal, calcular_amplitud_senal, calcular_promedio_senal
 from src.procesamiento_datos import filtrar_por_participante
-from src.validacion_datos import *
 
 ruta = './datos/PulseLab_mock_data.csv'
 i_d = 1
@@ -23,3 +22,9 @@ except Exception as e:
     print(e)
 else:
     print(f'Se encontro a un participante con el id {participante["id"]}')
+    fc_participante = calcular_fc_desde_datos([participante])
+    promedio_participante = calcular_promedio_senal([participante])
+    max_participante = calcular_maximo_senal([participante])
+    min_participante = calcular_minimo_senal([participante])
+    amplitud_participante = calcular_amplitud_senal(max_participante, min_participante)
+    print(f'El promedio del participante {participante["id"]} es de {promedio_participante}, su maximo es de {max_participante}, su minimo es de {min_participante}, su amplitud es de {amplitud_participante} y su frequencia es de {fc_participante}Hz')

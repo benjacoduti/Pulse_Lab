@@ -1,4 +1,5 @@
 from src.validacion_datos import validar_dato
+
 # Abrir Archivo
 def abrir_archivo(ruta:str)->list:
     """
@@ -26,7 +27,7 @@ def abrir_archivo(ruta:str)->list:
         archivo = open(ruta,"r")
         lineas = archivo.readlines()
         archivo.close()
-    except FileNotFoundError:
+    except FileNotFoundError, Exception:
         raise FileNotFoundError("No se encuentra el archivo - Se detectó en abrir_archivo")
     else:
         return lineas
@@ -51,14 +52,10 @@ def parsear_linea(linea:str)->list:
     linea_parseada = []
     linea = linea.strip("\n")
     data_linea = linea.split(",") #!!! split con (",") o (";") ?
-    
-    i = 0
-    
-    for dato in data_linea:
-        
-        dato = validar_dato(dato,i)
-        linea_parseada.append(dato)
-        i += 1
+
+    for i in range(0, len(data_linea)):
+        dato_valido = validar_dato(data_linea[i], i)
+        linea_parseada.append(dato_valido)
         
     return linea_parseada
 
@@ -87,13 +84,10 @@ def cargar_datos(ruta:str)->list:
 
     """
     datos = []
-    id_anterior = None # Flag creada para la posterior comparación entre id's
-    i = 0
     lineas = abrir_archivo(ruta)
-    
-    while i < len(lineas):
-        linea_parseada = parsear_linea(lineas[i])
 
+    for linea in lineas:
+        linea_parseada = parsear_linea(linea)
         i_d = (linea_parseada[0])
         tiempo = linea_parseada[1]
         valor = linea_parseada[2]
@@ -101,28 +95,30 @@ def cargar_datos(ruta:str)->list:
         condicion_experimental = linea_parseada[4]
         hit = linea_parseada[5]
 
+        participante_existente = None
+
+        for p in datos:
+            if p["id"] == i_d:
+                participante_existente = p
+                break
+
         #Creación del diccionario
-        if i_d != id_anterior:
-            registro_participante = {} # Quitando el id, el resto de valores se guarda en listas
-            
-            registro_participante["id"] = i_d
-            registro_participante["tiempo"] = [tiempo]
-            registro_participante["valor"] = [valor]
-            registro_participante["fase"] = [fase]
-            registro_participante["condicion_experimental"] = [condicion_experimental]
-            registro_participante["hit"] = [hit]
-            
-            id_anterior = i_d
+        if participante_existente is None:
+            registro_participante = {
+                "id": i_d,
+                "tiempo": [],
+                "valor": [],
+                "fase": [],
+                "condicion_experimental": [],
+                "hit": []
+            }
             datos.append(registro_participante)
-        
+
         # Actualización del diccionario
-        else:
-            registro_participante["tiempo"].append(tiempo)
-            registro_participante["valor"].append(valor)
-            registro_participante["fase"].append(fase)
-            registro_participante["condicion_experimental"].append(condicion_experimental)
-            registro_participante["hit"].append(hit)
-        
-        i+=1
+        registro_participante["tiempo"].append(tiempo)
+        registro_participante["valor"].append(valor)
+        registro_participante["fase"].append(fase)
+        registro_participante["condicion_experimental"].append(condicion_experimental)
+        registro_participante["hit"].append(hit)
     
     return datos

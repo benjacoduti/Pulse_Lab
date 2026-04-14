@@ -31,14 +31,13 @@ def calcular_fc_desde_datos(datos: list) -> float:
     :return:
         -float con la frequencia promedio de todos los participantes.
     """
-    tiempos=[]
-    senal=[]
+    frequencias = []
     for d in datos:
-        tiempos.append(d["tiempo"]) # se puede usar .extend
-        senal.append(d["valor"])
-
-    picos = detectar_picos_qrs(tiempos, senal)
-    return calcular_frecuencia_cardiaca(picos)
+        picos = detectar_picos_qrs(d['tiempo'], d['valor'], 0.8,0.3)
+        fc = calcular_frecuencia_cardiaca(picos)
+        frequencias.append(fc)
+    promedio_fc = sum(frequencias) / len(frequencias)
+    return round(promedio_fc, 3)
 
 def calcular_promedio_senal(datos: list) -> float:
     '''
@@ -68,7 +67,7 @@ def calcular_promedio_senal(datos: list) -> float:
         
     promedio = sum(lista_senales) / len(lista_senales)
     
-    return(promedio)
+    return round(promedio, 2)
 
 
 def calcular_minimo_senal(datos: list) -> float:

@@ -1,26 +1,24 @@
-def filtrar_por_participante(datos: list, id_participante: int) -> dict:
+from validacion_datos import pedir_id
+
+def filtrar_por_participante(datos: list) -> dict:
     """
-    Recibe una lista con registros de participantes y un id que se desea buscar; filtra al participante cuyo id sea igual al recibido
+    Recibe una lista con registros de participantes en donde se desea buscar; filtra al participante cuyo id sea igual al ingresado por consola
 
     Parameters
     ----------
     datos : list
-        Lista de registros
-    id_participante : int
-        Id de participante solicitado
-
+        Lista de registros en donde buscar el participante
     Raises
     ------
     Exception
         No hay participante con ese id ingresado
-
     Returns
     -------
     dict
-        Registro del participante buscado 
-
+        Registro del participante buscado
     """
     i=0
+    id_participante = pedir_id()
     while i <len(datos): 
         
         if datos[i]["id"] == id_participante:
@@ -28,5 +26,5 @@ def filtrar_por_participante(datos: list, id_participante: int) -> dict:
         else:
             i += 1
     
-    raise Exception("No se encontro participante alguno con el id ingresado - Se detectó en filtrar_por_participante")
+    raise Exception("No se encontró participante alguno con el id ingresado - Se detectó en filtrar_por_participante")
 

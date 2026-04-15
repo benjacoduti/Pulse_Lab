@@ -51,9 +51,9 @@ def validar_dato(dato, i):
         return None
 """
 
-def validar_linea(linea:list) ->list: 
-    '''
-    Valida una línea recibida y castea a diferentes tipos de datos si es posible
+def validar_linea(linea:list) ->list:
+    """
+    Válida una línea recibida y castea a diferentes tipos de datos si es posible
     Los datos se encuentran ordenados por posición, lo que vuelve posible
     el castearlos según la posición en la que se encuentren.
 
@@ -66,11 +66,12 @@ def validar_linea(linea:list) ->list:
     -------
     linea : list
         Linea con los datos correspondientes casteados
-        
+
     Raises
     ------
-        Value Error si el casteo no puede llevarse a cabo
-    '''
+        ValueError si el casteo no puede llevarse a cabo
+    """
+    dato = None
     try:
         dato = "id"
         linea[0] = int(linea[0])
@@ -86,11 +87,23 @@ def validar_linea(linea:list) ->list:
         linea[5] = bool(linea[5])
         
     except ValueError:
-        raise(f"Error en {dato} - Se detectó en validacion_linea")
+        raise ValueError(f"Error en {dato} - Se detectó en validacion_linea")
         
     return linea
 
-
-    
-    
-
+def pedir_id():
+    """
+    Pide al usuario por consola un id que debe ser un numero entero positivo.
+    :raises: ValueError si el numero ingresado es negativo o si no es un numero
+    :return: id de participante valido
+    """
+    while True:
+        try:
+            i_d = int(input("Ingrese el id del participante: "))
+            if i_d < 0:
+                print('Error, el id del participante no puede ser negativo')
+                continue
+            else:
+                return i_d
+        except ValueError:
+            print('Error, el id del participante debe ser un numero')

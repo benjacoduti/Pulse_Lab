@@ -55,10 +55,12 @@ def calcular_promedio_senal(datos: list) -> float:
         Promedio de señales totales
 
     '''
-    
+    if datos is None or len(datos) == 0:
+        raise ValueError("No hay datos de los participantes")
+
     lista_senales = []
     i = 0
-    
+
     while i < len(datos):
         
         valores = datos[i]["valor"]

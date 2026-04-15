@@ -3,7 +3,6 @@ from src.metricas import calcular_fc_desde_datos, calcular_maximo_senal, calcula
 from src.procesamiento_datos import filtrar_por_participante
 
 ruta = './datos/PulseLab_mock_data.csv'
-i_d = 1
 
 datos = cargar_datos(ruta)
 
@@ -16,15 +15,11 @@ print(f'El promedio de la senal es: {promedio}')
 print(f'La frequencia cardiaca promedio es de {fc}Hz')
 print(f'El maximo de la señal es de {senal_max} y el minimo es de {senal_min}')
 
-try:
-    participante = filtrar_por_participante(datos, i_d)
-except Exception as e:
-    print(e)
-else:
-    print(f'Se encontro a un participante con el id {participante["id"]}')
-    fc_participante = calcular_fc_desde_datos([participante])
-    promedio_participante = calcular_promedio_senal([participante])
-    max_participante = calcular_maximo_senal([participante])
-    min_participante = calcular_minimo_senal([participante])
-    amplitud_participante = calcular_amplitud_senal(max_participante, min_participante)
-    print(f'\n| El promedio del participante {participante["id"]} es de {promedio_participante}\n| Su maximo es de {max_participante}\n| Su minimo es de {min_participante}\n| Su amplitud es de {amplitud_participante}\n| Su frequencia es de {fc_participante}Hz')
+participante = filtrar_por_participante(datos)
+print(f'Se encontro a un participante con el id {participante["id"]}')
+fc_participante = calcular_fc_desde_datos([participante])
+promedio_participante = calcular_promedio_senal([participante])
+max_participante = calcular_maximo_senal([participante])
+min_participante = calcular_minimo_senal([participante])
+amplitud_participante = calcular_amplitud_senal(max_participante, min_participante)
+print(f'\n| El promedio del participante {participante["id"]} es de {promedio_participante}\n| Su maximo es de {max_participante}\n| Su minimo es de {min_participante}\n| Su amplitud es de {amplitud_participante}\n| Su frequencia es de {fc_participante}Hz')

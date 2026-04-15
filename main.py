@@ -27,4 +27,4 @@ else:
     max_participante = calcular_maximo_senal([participante])
     min_participante = calcular_minimo_senal([participante])
     amplitud_participante = calcular_amplitud_senal(max_participante, min_participante)
-    print(f'El promedio del participante {participante["id"]} es de {promedio_participante}, su maximo es de {max_participante}, su minimo es de {min_participante}, su amplitud es de {amplitud_participante} y su frequencia es de {fc_participante}Hz')
+    print(f'\n| El promedio del participante {participante["id"]} es de {promedio_participante}\n| Su maximo es de {max_participante}\n| Su minimo es de {min_participante}\n| Su amplitud es de {amplitud_participante}\n| Su frequencia es de {fc_participante}Hz')

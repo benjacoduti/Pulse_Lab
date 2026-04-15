@@ -90,24 +90,24 @@ def cargar_datos(ruta:str)->list:
 
     for linea in lineas:
         linea_parseada = parsear_linea(linea)
-        linea_parseada = validar_linea(linea_parseada)
-        
-        i_d = (linea_parseada[0])
-        tiempo = linea_parseada[1]
-        valor = linea_parseada[2]
-        fase = linea_parseada[3]
-        condicion_experimental = linea_parseada[4]
-        hit = linea_parseada[5]
+        linea_valida = validar_linea(linea_parseada)
 
-        participante_existente = None
+        i_d = (linea_valida[0])
+        tiempo = linea_valida[1]
+        valor = linea_valida[2]
+        fase = linea_valida[3]
+        condicion_experimental = linea_valida[4]
+        hit = linea_valida[5]
+
+        registro_participante = None
 
         for p in datos:
             if p["id"] == i_d:
-                participante_existente = p
+                registro_participante = p
                 break
 
         #Creación del diccionario
-        if participante_existente is None:
+        if registro_participante is None:
             registro_participante = {
                 "id": i_d,
                 "tiempo": [],

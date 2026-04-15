@@ -1,4 +1,4 @@
-from src.validacion_datos import validar_dato
+from src.validacion_datos import validar_linea
 
 # Abrir Archivo
 def abrir_archivo(ruta:str)->list:
@@ -51,11 +51,13 @@ def parsear_linea(linea:str)->list:
     """
     linea_parseada = []
     linea = linea.strip("\n")
-    data_linea = linea.split(",") #!!! split con (",") o (";") ?
+    linea_parseada = linea.split(",") #!!! split con (",") o (";") ?
 
-    for i in range(0, len(data_linea)):
-        dato_valido = validar_dato(data_linea[i], i)
-        linea_parseada.append(dato_valido)
+    # Si usásemos validar dato:
+
+    #for i in range(0, len(data_linea)):
+    #    dato_valido = validar_dato(data_linea[i], i)
+    #    linea_parseada.append(dato_valido)
         
     return linea_parseada
 
@@ -88,6 +90,8 @@ def cargar_datos(ruta:str)->list:
 
     for linea in lineas:
         linea_parseada = parsear_linea(linea)
+        linea_parseada = validar_linea(linea_parseada)
+        
         i_d = (linea_parseada[0])
         tiempo = linea_parseada[1]
         valor = linea_parseada[2]

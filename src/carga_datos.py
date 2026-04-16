@@ -19,6 +19,10 @@ def abrir_archivo(ruta:str)->list:
     -------
     lineas : list
         Lista que contiene strings correspondientes a las filas del archivo
+        
+    Raises: ValueError si la ruta del archivo no es válida;
+            FileNotFoundError si no se encuentra el archivo; 
+            Exception para captar todo error posible
 
     """
     if ruta is None or ruta == "":
@@ -36,8 +40,7 @@ def abrir_archivo(ruta:str)->list:
 def parsear_linea(linea:str)->list:
     """
     Recibe una línea de un archivo y la devuelve modificada;
-    Se encarga de separar la línea en campos y convertir la data en el tipo
-    que corresponde
+    Se encarga de eliminar impurezas y de separar la línea en campos 
 
     Parameters
     ----------
@@ -47,7 +50,7 @@ def parsear_linea(linea:str)->list:
     Returns
     -------
     linea_parseada : list
-        Lista que contiene los datos convertidos de la lista parseada
+        Lista que contiene los datos de la lista parseada
     """
     linea_parseada = []
     linea = linea.strip("\n")
@@ -66,8 +69,8 @@ def cargar_datos(ruta:str)->list:
     """
     Recibe la ruta de un archivo y se la envía a la función abrir_archivo para que extraiga
     la información;
-    Luego, por cada línea de información, llama a la función parsear_linea para poder
-    castear los diferentes tipos de datos y eliminar impurezas de la línea;
+    Luego, por cada línea de información, llama a la función parsear_linea para aplicar un parseo 
+    Posteriorimente, llama a validar_linea que devuelve los datos validados y casteados.
     Finalmente, genera un diccionario con un registro de los participantes
     por cada participante con distinto id, y lo actualiza hasta finalizar el recorrido
     de las líneas del archivo.
@@ -81,8 +84,7 @@ def cargar_datos(ruta:str)->list:
     Returns
     -------
     datos : list
-        Lista que contiene diccionarios con los datos divididos por participantes;
-        #!!! Hace falta agregar qué contiene?
+        Lista que contiene diccionarios con los datos divididos por participantes
 
     """
     datos = []

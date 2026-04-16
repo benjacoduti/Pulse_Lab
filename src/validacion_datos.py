@@ -95,14 +95,13 @@ def pedir_id():
     """
     Pide al usuario por consola un id que debe ser un numero entero positivo.
     :raises: ValueError si el numero ingresado es negativo o si no es un numero
-    :return: id de participante valido
+    :return: int : id de participante valido
     """
     while True:
         try:
             i_d = int(input("Ingrese el id del participante: "))
             if i_d < 0:
                 print('Error, el id del participante no puede ser negativo')
-                continue
             else:
                 return i_d
         except ValueError:

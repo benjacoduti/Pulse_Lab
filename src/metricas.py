@@ -8,6 +8,9 @@ def calcular_frecuencia_cardiaca(picos: list) -> float:
 
     :return:
         -float con la frequencia de estos eventos.
+        
+    :raises: ZeroDivisionError si la distancia promedio entre picos es 0
+    
     """
     if len(picos) < 2:
         raise Exception("El numero de picos debe ser mayor que 2, se detecto en calcular_frecuencia_cardiaca")
@@ -23,7 +26,8 @@ def calcular_frecuencia_cardiaca(picos: list) -> float:
             
 def calcular_fc_desde_datos(datos: list) -> float:
     """
-    Recibe una lista de diccionarios correspondientes a cada participante.
+    Recibe una lista de diccionarios correspondientes a cada participante. 
+    (Puede calcular las métricas en función de un único participante también, si se pasa el diccionario dentro de una lista)
     Crea listas con todos los tiempos y señales de todos los participantes. Utiliza la función detectar_picos_qrs para conseguir todos los picos de la señal
     Utiliza la función calcular_frecuencia_cardiaca para calcular frequencia cardiaca promedio de todos los participantes.
     :param
@@ -42,6 +46,7 @@ def calcular_fc_desde_datos(datos: list) -> float:
 def calcular_promedio_senal(datos: list) -> float:
     '''
     Recibe un lista de los registros de los participantes, analiza sus datos y guarda las señales de cada participante.
+    (Puede calcular las métricas en función de un único participante también, si se pasa el diccionario dentro de una lista)
     Finalmente, calcula un promedio de señales totales en base a los datos de todos los participantes.
 
     Parameters
@@ -53,6 +58,8 @@ def calcular_promedio_senal(datos: list) -> float:
     -------
     promedio : float
         Promedio de señales totales
+        
+    Raises: ValueError si no hay datos de los participantes        
 
     '''
     if datos is None or len(datos) == 0:
@@ -75,6 +82,7 @@ def calcular_promedio_senal(datos: list) -> float:
 def calcular_minimo_senal(datos: list) -> float:
     """
     Calcula el valor mínimo de la señal ECG.
+    (Puede calcular las métricas en función de un único participante también, si se pasa el diccionario dentro de una lista)
     Parmetr.:
     datos : (list)
         Lista de diccionarios, donde cada diccionario contiene un valor de señal en la clave valor
@@ -92,6 +100,7 @@ def calcular_minimo_senal(datos: list) -> float:
 def calcular_maximo_senal(datos: list) -> float:
     """
     Calcula el valor máximo de la señal ECG.
+    (Puede calcular las métricas en función de un único participante también, si se pasa el diccionario dentro de una lista)
     Parametros:
     datos : list
            Lista de diccionarios, donde cada diccionario contiene un valor de señal en la clave "valor".

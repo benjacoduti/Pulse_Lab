@@ -2,20 +2,23 @@ from validacion_datos import pedir_id
 
 def filtrar_por_participante(datos: list) -> dict:
     """
-    Recibe una lista con registros de participantes en donde se desea buscar; filtra al participante cuyo id sea igual al ingresado por consola
+    Recibe una lista con registros de participantes en donde se desea buscar;
+    filtra al participante cuyo id sea igual al ingresado por consola
 
     Parameters
     ----------
     datos : list
         Lista de registros en donde buscar el participante
-    Raises
-    ------
-    Exception
-        No hay participante con ese id ingresado
+        
     Returns
     -------
     dict
         Registro del participante buscado
+        
+    Raises
+    ------
+    Exception
+        No hay participante con ese id ingresado
     """
     i=0
     id_participante = pedir_id()

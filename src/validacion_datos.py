@@ -1,56 +1,3 @@
-"""
-def validar_dato(dato, i):
-    
-    # '''
-    
-    Recibe un dato perteneciente a una línea del archivo y su posición y válida los tipos de los datos
-    :param dato: Un dato específico de la línea
-    :return:
-    dato: dato validado y casteado al tipo de dato correspondiente
-    :raises:
-        ValueError: dependiendo del tipo de error
-        IndexError: Si la posición indicada no existe
-    
-    # '''
-    
-    if i < 0 or i > 5:
-        raise IndexError('La posición indicada no existe en la linea - Se detectó en validar_dato')
-    if dato == " " or dato is None:
-        raise ValueError(f"El dato en la posición {i+1} - Se detectó en validar_dato")
-    elif i < 3:
-        try:
-            if i == 0:
-                dato = int(dato)
-            elif i == 1 or i == 2:
-                dato = float(dato)
-        except ValueError:
-            raise ValueError(f"El dato en la posición {i+1} no es del tipo especificado - Se detectó en validar dato")
-        else:
-            if dato < 0:
-                raise ValueError(f"El dato en la posición {i+1} es negativo - Se detectó en validar_dato")
-            else:
-                return dato
-    elif i == 3:
-        if dato == "baseline" or dato == "tarea":
-            return dato
-        else:
-            raise ValueError(f"El dato en la posición {i+1} no es una de las opciones validas - Se detectó en validar_dato")
-    elif i == 4:
-        if dato == "cooperacion" or dato == "competencia":
-            return dato
-        else:
-            raise ValueError(f"El dato en la posición {i+1} no es una de las opciones validas - Se detectó en validar_dato")
-    elif i == 5:
-        if dato == "True":
-            return True
-        elif dato == "False":
-            return False
-        else:
-            raise ValueError(f"El dato en la posición {i+1} no es del tipo especificado - Se detectó en validar_dato")
-    else:
-        return None
-"""
-
 def validar_linea(linea:list) ->list:
     """
     Válida una línea recibida y castea a diferentes tipos de datos si es posible
@@ -71,38 +18,61 @@ def validar_linea(linea:list) ->list:
     ------
         ValueError si el casteo no puede llevarse a cabo
     """
-    dato = None
     try:
         dato = "id"
-        linea[0] = int(linea[0])
+        i_d = linea[0]
+        validar_entero_positivo(i_d, dato)
+
         dato = "tiempo"
-        linea[1] = float(linea[1])
+        tiempo = linea[1]
+        validar_entero_positivo(tiempo, dato)
+
         dato = "señal"
-        linea[2] = float(linea[2])
+        valor = linea[2]
+        validar_entero_positivo(valor, dato)
+
         dato = "fase"
-        linea[3] = str(linea[3])
+        fase = linea[3]
+        validar_string_categorias(fase, ['baseline', 'tarea'], dato)
+
         dato = "condición experimental"
-        linea[4] = str(linea[4])
+        condicion_experimental = linea[4]
+        validar_string_categorias(condicion_experimental, ['cooperación', 'competencia'], dato)
+
         dato = "hit"
-        linea[5] = bool(linea[5])
-        
-    except ValueError:
-        raise ValueError(f"Error en {dato} - Se detectó en validacion_linea")
-        
-    return linea
+        hit = linea[5]
+        validar_string_categorias(hit, ['True', 'False'], dato)
+    except ValueError as e:
+        raise ValueError(e)
+    else:
+        return linea
 
 def pedir_id():
     """
     Pide al usuario por consola un id que debe ser un numero entero positivo.
     :raises: ValueError si el numero ingresado es negativo o si no es un numero
-    :return: int : id de participante valido
+    :return: id de participante valido
     """
     while True:
         try:
             i_d = int(input("Ingrese el id del participante: "))
-            if i_d < 0:
-                print('Error, el id del participante no puede ser negativo')
+            if validar_entero_positivo(i_d, "Id ingresado"):
+                continue
             else:
                 return i_d
         except ValueError:
             print('Error, el id del participante debe ser un numero')
+
+def validar_entero_positivo(num, nombre_campo):
+    """
+    ESCRIBIR DOCSTRING
+    :param num:
+    :param nombre_campo:
+    :return:
+    """
+    if num < 0:
+        raise ValueError(f'Error, el valor de {nombre_campo} no puede ser negativo - se detecto en validar_entero_positivo')
+
+def validar_string_categorias(valor, categorias, nombre_del_campo):
+    if valor not in categorias:
+        raise ValueError(f'El valor de {nombre_del_campo} debe ser {categorias} - se detecto en validar_string_categorias')

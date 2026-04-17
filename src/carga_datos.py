@@ -52,17 +52,36 @@ def parsear_linea(linea:str)->list:
     linea_parseada : list
         Lista que contiene los datos de la lista parseada
     """
-    linea_parseada = []
     linea = linea.strip("\n")
     linea_parseada = linea.split(",") #!!! split con (",") o (";") ?
 
-    # Si usásemos validar dato:
+    if len(linea_parseada) < 6:
+        raise ValueError("La linea no contiene las 6 columnas requeridas - Se detecto en parsear_linea")
 
-    #for i in range(0, len(data_linea)):
-    #    dato_valido = validar_dato(data_linea[i], i)
-    #    linea_parseada.append(dato_valido)
-        
-    return linea_parseada
+    dato = None
+    try:
+        dato = "id"
+        linea[0] = int(linea[0])
+
+        dato = "tiempo"
+        linea[1] = float(linea[1])
+
+        dato = "señal"
+        linea[2] = float(linea[2])
+
+        dato = "fase"
+        linea[3] = str()
+
+        dato = "condición experimental"
+        linea[4] = str(linea[4])
+
+        dato = "hit"
+        linea[5] = bool(linea[5])
+
+    except TypeError:
+        raise TypeError(f"Error de tipo en {dato} - Se detectó en pasear_linea")
+    else:
+        return linea_parseada
 
 # Cargar Datos
 def cargar_datos(ruta:str)->list:

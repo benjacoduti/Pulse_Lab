@@ -26,13 +26,13 @@ def abrir_archivo(ruta:str)->list:
 
     """
     if ruta is None or ruta == "":
-        raise ValueError("La ruta de archivo no es valido - Se detectó en abrir_archivo")
+        raise ValueError("La ruta de archivo no es valido - Ubicación : abrir_archivo")
     try:
         archivo = open(ruta,"r")
         lineas = archivo.readlines()
         archivo.close()
     except (FileNotFoundError, Exception):
-        raise FileNotFoundError("No se encuentra el archivo - Se detectó en abrir_archivo")
+        raise FileNotFoundError("No se encuentra el archivo - Ubicación : en abrir_archivo")
     else:
         return lineas
 
@@ -51,18 +51,22 @@ def parsear_linea(linea:str)->list:
     -------
     linea_parseada : list
         Lista que contiene los datos de la lista parseada
+        
+    Raises: ValueError si la línea no tiene las columnas requeridas
+    
     """
-    linea_parseada = []
     linea = linea.strip("\n")
     linea_parseada = linea.split(",") #!!! split con (",") o (";") ?
 
+        
     # Si usásemos validar dato:
 
     #for i in range(0, len(data_linea)):
     #    dato_valido = validar_dato(data_linea[i], i)
     #    linea_parseada.append(dato_valido)
-        
-    return linea_parseada
+    
+    else:        
+        return linea_parseada
 
 # Cargar Datos
 def cargar_datos(ruta:str)->list:
@@ -85,46 +89,62 @@ def cargar_datos(ruta:str)->list:
     -------
     datos : list
         Lista que contiene diccionarios con los datos divididos por participantes
+        
+    Raises:
+        ValueError si la ruta del archivo no es válida o si la línea no tiene las columnas requeridas;
+        FileNotFoundError si no se encuentra el archivo; 
+        Exception para captar todo error posible
 
     """
     datos = []
-    lineas = abrir_archivo(ruta)
+    try:
+        lineas = abrir_archivo(ruta)
+    except (FileNotFoundError, Exception) as e:
+        raise FileNotFoundError(e)
+    except ValueError as e:
+        raise ValueError(e)
 
     for linea in lineas:
-        linea_parseada = parsear_linea(linea)
-        linea_valida = validar_linea(linea_parseada)
-
-        i_d = (linea_valida[0])
-        tiempo = linea_valida[1]
-        valor = linea_valida[2]
-        fase = linea_valida[3]
-        condicion_experimental = linea_valida[4]
-        hit = linea_valida[5]
-
-        registro_participante = None
-
-        for p in datos:
-            if p["id"] == i_d:
-                registro_participante = p
-                break
-
-        #Creación del diccionario
-        if registro_participante is None:
-            registro_participante = {
-                "id": i_d,
-                "tiempo": [],
-                "valor": [],
-                "fase": [],
-                "condicion_experimental": [],
-                "hit": []
-            }
-            datos.append(registro_participante)
-
-        # Actualización del diccionario
-        registro_participante["tiempo"].append(tiempo)
-        registro_participante["valor"].append(valor)
-        registro_participante["fase"].append(fase)
-        registro_participante["condicion_experimental"].append(condicion_experimental)
-        registro_participante["hit"].append(hit)
+        try:
+            linea_parseada = parsear_linea(linea)
+            linea_valida = validar_linea(linea_parseada)
+        except ValueError as e: 
+            raise ValueError(e)
+        except TypeError as e:
+            raise TypeError(e)
+        else:
+    
+            i_d = (linea_valida[0])
+            tiempo = linea_valida[1]
+            valor = linea_valida[2]
+            fase = linea_valida[3]
+            condicion_experimental = linea_valida[4]
+            hit = linea_valida[5]
+    
+            registro_participante = None
+    
+            for p in datos:
+                if p["id"] == i_d:
+                    registro_participante = p
+                    break
+    
+            #Creación del diccionario
+            if registro_participante is None:
+                registro_participante = {
+                    "id": i_d,
+                    "tiempo": [],
+                    "valor": [],
+                    "fase": [],
+                    "condicion_experimental": [],
+                    "hit": []
+                }
+                datos.append(registro_participante)
+    
+            # Actualización del diccionario
+            registro_participante["tiempo"].append(tiempo)
+            registro_participante["valor"].append(valor)
+            registro_participante["fase"].append(fase)
+            registro_participante["condicion_experimental"].append(condicion_experimental)
+            registro_participante["hit"].append(hit)
     
     return datos

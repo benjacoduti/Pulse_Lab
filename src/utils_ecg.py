@@ -1,35 +1,5 @@
 import numpy as np
 
-# def detectar_picos_qrs(tiempos: list, senal: list, umbral: float = 0.9, distancia_minima: float = 0.3) -> list:
-#     """
-#     Detecta picos en la señal ECG.
-#     Parámetros:
-#     - tiempos: lista de tiempos
-#     - senal: lista de valores de la señal
-#     - umbral: valor mínimo para considerar un pico
-#     - distancia minima: tiempo mínimo entre picos
-#     Retorna:
-#     - lista de tiempos donde ocurren los picos
-#     """
-#     if umbral <= 0:
-#
-#         raise ValueError ("El umbral no puede ser menor o igual a 0 - El error proviene de la función detectar_picos_qrs")
-#
-#     if distancia_minima <= 0:
-#
-#         raise ValueError("La distancia minima no puede ser menor o igual a 0 - El error proviene de la función detectar_picos_qrs")
-#
-#     tiempos_picos=[]
-#     for i in range(len(tiempos)): # se puede usar .extend
-#         for k in range(len(tiempos[i])):
-#             if senal[i][k] >= umbral:
-#                 if len(tiempos_picos)==0:
-#                     tiempos_picos.append(tiempos[i][k])
-#                 elif tiempos[i][k] - tiempos_picos[-1] > distancia_minima:
-#                     tiempos_picos.append(tiempos[i][k])
-#
-#     return tiempos_picos
-
 def detectar_picos_qrs(tiempos, senal, umbral=0.8, distancia_minima=0.3, debug=False):
     """
     Detecta picos QRS en una señal de ECG de forma robusta
@@ -57,21 +27,20 @@ def detectar_picos_qrs(tiempos, senal, umbral=0.8, distancia_minima=0.3, debug=F
       es muy corto para detectar picos
     """
 
-
     # ---------------------------
     # Validación básica
     # ---------------------------
     if len(tiempos) != len(senal):
-        raise ValueError("El tiempo y la señal deben tener el mismo largo")
+        raise ValueError("El tiempo y la señal deben tener el mismo largo - Se detectó en detectar_picos_qrs")
 
     if len(tiempos) == 0 or len(senal) == 0:
-        raise ValueError("Las listas 'tiempos' y 'senal' no pueden estar vacías.")
+        raise ValueError("Las listas 'tiempos' y 'senal' no pueden estar vacías - Se detectó detectar_picos_qrs")
 
-    # if np.any(np.diff(tiempos) <= 0):
-    #      raise ValueError("Los valores de 'tiempos' deben estar ordenados de forma creciente.")
+    if np.any(np.diff(tiempos) <= 0):
+        raise ValueError("Los valores de 'tiempos' deben estar ordenados de forma creciente - Se detectó en detectar_picos_qrs")
 
     if len(tiempos) < 3:
-        raise ValueError("Tiempo de registro demasiado corto para detectar picos")
+        raise ValueError("Tiempo de registro demasiado corto para detectar picos - Se detectó en detectar_picos_qrs")
 
 
     t = np.array(tiempos)

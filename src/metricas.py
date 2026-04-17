@@ -1,4 +1,5 @@
 from src.utils_ecg import detectar_picos_qrs
+from validacion_datos import validar_entero_positivo
 
 def calcular_frecuencia_cardiaca(picos: list) -> float:
     """
@@ -10,10 +11,10 @@ def calcular_frecuencia_cardiaca(picos: list) -> float:
         -float con la frequencia de estos eventos.
         
     :raises: ZeroDivisionError si la distancia promedio entre picos es 0
-    
+             ValueError cuando el número de picos es menor a 2
     """
     if len(picos) < 2:
-        raise Exception("El numero de picos debe ser mayor que 2, se detecto en calcular_frecuencia_cardiaca")
+        raise ValueError("El numero de picos debe ser mayor que 2 - Se detecto en calcular_frecuencia_cardiaca")
     else:
             periodos = []
             for i in range(len(picos) - 1):
@@ -22,7 +23,7 @@ def calcular_frecuencia_cardiaca(picos: list) -> float:
             try:
                 return 1 / promedio #La frequencia la calculamos como 1 sobre el promedio de distancia entre picos
             except:
-                raise ZeroDivisionError("Se dividió por 0 debido a que la distancia promedio entre picos es 0, se detectó en calcular_frecuencia_cardiaca")
+                raise ZeroDivisionError("Se dividió por 0 debido a que la distancia promedio entre picos es 0 - Se detectó en calcular_frecuencia_cardiaca")
             
 def calcular_fc_desde_datos(datos: list) -> float:
     """
@@ -34,12 +35,23 @@ def calcular_fc_desde_datos(datos: list) -> float:
         -datos: lista de diccionarios correspondientes a cada participante.
     :return:
         -float con la frequencia promedio de todos los participantes.
+        
+    :raises: ValueError si la lista se encuentra vacía
+             Propaga errores de calcular_frecuencia_car´diaca y de detectar_picos_qrs
+    
     """
+    if datos is None or len(datos) == 0:
+        raise ValueError("La lista se encuentra vacía - Se detectó en calcular_fc_desde_datos")
     frequencias = []
     for d in datos:
-        picos = detectar_picos_qrs(d['tiempo'], d['valor'], 0.8,0.3)
-        fc = calcular_frecuencia_cardiaca(picos)
-        frequencias.append(fc)
+        try:
+            picos = detectar_picos_qrs(d['tiempo'], d['valor'], 0.8,0.3)
+            fc = calcular_frecuencia_cardiaca(picos)
+            frequencias.append(fc)
+        except ZeroDivisionError as e:
+            raise ZeroDivisionError(e)
+        except ValueError as e:
+            raise ValueError(e)            
     promedio_fc = sum(frequencias) / len(frequencias)
     return round(promedio_fc, 3)
 
@@ -63,7 +75,7 @@ def calcular_promedio_senal(datos: list) -> float:
 
     '''
     if datos is None or len(datos) == 0:
-        raise ValueError("No hay datos de los participantes")
+        raise ValueError("La lista se encuentra vacía - Se detectó en calcular_promedio_senal")
 
     lista_senales = []
     i = 0
@@ -89,7 +101,13 @@ def calcular_minimo_senal(datos: list) -> float:
     Retorna:
     minimo : float
         El valor mínimo de la señal.
+        
+    Raises: ValueError si la lista se encuentra vacía
+    
     """
+    if datos is None or len(datos) == 0:
+        raise ValueError("La lista se encuentra vacía - Se detectó en calcular_minimo_senal")
+    
     valores_minimos = []
     for dato in datos:
         valores_minimos.append(min(dato["valor"]))
@@ -107,7 +125,13 @@ def calcular_maximo_senal(datos: list) -> float:
     Retorna:
     maximo : float
         El valor máximo de la señal.
+        
+    Raises: ValueError si la lista se encuentra vacía
+        
     """
+    if datos is None or len(datos) == 0:
+        raise ValueError("La lista se encuentra vacía - Se detectó en calcular_maximo_senal")
+    
     valores_maximos = []
     for dato in datos:
         valores_maximos.append(max(dato["valor"]))
@@ -127,7 +151,15 @@ def calcular_amplitud_senal(maximo, minimo) -> float:
     Retorna:
     amplitud : float
         La amplitud de la señal.
+        
+    Raises: Propaga errores de validar_entero_positivo
     """
-
+        
+    try:
+        validar_entero_positivo(maximo, "maximo ingresado por parametro")
+        validar_entero_positivo(minimo, "minimo ingresado por parametro")    
+    except ValueError as e:
+        raise ValueError(e)
+    
     amplitud = maximo - minimo #suponiendo que la amplitud es esto 
     return amplitud

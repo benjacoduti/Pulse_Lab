@@ -50,29 +50,29 @@ def validar_linea(linea:list) ->list:
 def pedir_id():
     """
     Pide al usuario por consola un id que debe ser un numero entero positivo.
-    :raises: ValueError si el numero ingresado es negativo o si no es un numero
     :return: id de participante valido
     """
     while True:
         try:
             i_d = int(input("Ingrese el id del participante: "))
-            if validar_entero_positivo(i_d, "Id ingresado"):
-                continue
-            else:
+            if validar_entero_positivo(i_d, "Id ingresado") == True:
                 return i_d
+        
         except ValueError:
             print('Error, el id del participante debe ser un numero')
 
 def validar_entero_positivo(num, nombre_campo):
     """
-    ESCRIBIR DOCSTRING
+    #!!! ESCRIBIR DOCSTRING
     :param num:
     :param nombre_campo:
     :return:
     """
     if num < 0:
         raise ValueError(f'Error, el valor de {nombre_campo} no puede ser negativo - se detecto en validar_entero_positivo')
-
+    else:
+        return True
+        
 def validar_string_categorias(valor, categorias, nombre_del_campo):
     if valor not in categorias:
         raise ValueError(f'El valor de {nombre_del_campo} debe ser {categorias} - se detecto en validar_string_categorias')

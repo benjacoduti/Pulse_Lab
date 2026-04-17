@@ -32,4 +32,4 @@ except TypeError as e:
 except ZeroDivisionError as e:
     print("[ERROR CRITICO] Tipo de error: ZeroDivisionError. Descripcion:",e)
 except Exception as e:
-    print ("[ERROR CRITICO] Tipo de error: Exception. Descripcion:", e)
+    print ("[ERROR INESPERADO] Tipo de error: Exception. Descripcion:", e)

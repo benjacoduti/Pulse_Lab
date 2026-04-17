@@ -21,7 +21,9 @@ def filtrar_por_participante(datos: list) -> dict:
         No hay participante con ese id ingresado
     """
     i=0
+    
     id_participante = pedir_id()
+        
     while i <len(datos): 
         
         if datos[i]["id"] == id_participante:

@@ -63,10 +63,12 @@ def pedir_id():
 
 def validar_entero_positivo(num, nombre_campo):
     """
-    #!!! ESCRIBIR DOCSTRING
-    :param num:
-    :param nombre_campo:
-    :return:
+    Chequea que el numero sea entero postivo     
+    :param num: Int
+    :param nombre_campo: str que corresponde a la categoria del dato que se busca validar 
+    :return: Devuelve True si lo valida correctamente o raisea el error si no
+    :raise: Value error si el numero es negativo 
+            
     """
     if num < 0:
         raise ValueError(f'Error, el valor de {nombre_campo} no puede ser negativo - se detecto en validar_entero_positivo')
@@ -74,5 +76,17 @@ def validar_entero_positivo(num, nombre_campo):
         return True
         
 def validar_string_categorias(valor, categorias, nombre_del_campo):
+    '''
+    Chequea que el valor este en las categorias
+    valor : str es el valor a chequear
+    categorias : lista de str con los posibles valores a chequear
+    nombre_del_campo : str que corresponde a la categoria del dato que se busca validar 
+    Raises: Value error si el valor no esta en categorias
+    Returns: Devuelve True si lo valida correctamente o raisea el error si no
+
+    '''
+    
     if valor not in categorias:
-        raise ValueError(f'El valor de {nombre_del_campo} debe ser {categorias} - se detecto en validar_string_categorias')
+        raise ValueError(f'El valor de {nombre_del_campo} debe ser {categorias} - se detecto en validar_string_categorias')  
+    else:
+         return True

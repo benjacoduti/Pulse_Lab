@@ -139,27 +139,24 @@ def calcular_maximo_senal(datos: list) -> float:
     maximo = max(valores_maximos)
     return maximo
 
-def calcular_amplitud_senal(maximo, minimo) -> float:
+def calcular_amplitud_senal(datos) -> float:
     """
     Calcula la amplitud de la señal ECG.
     La amplitud se define como la diferencia entre el valor máximo y el valor mínimo.
     Parmet.:
-    maximo : int/float
-        Mínima señal de entre los participantes analizados
-    minimo : int/float
-        Mínima señal de entre los participantes analizados
+     datos : list
+            Lista de diccionarios, donde cada diccionario contiene un valor de señal en la clave "valor".
     Retorna:
     amplitud : float
         La amplitud de la señal.
         
-    Raises: Propaga errores de validar_entero_positivo
+    Raises: Propaga errores de calcular maximo y minimo senal 
     """
-        
-    try:
-        validar_entero_positivo(maximo, "maximo ingresado por parametro")
-        validar_entero_positivo(minimo, "minimo ingresado por parametro")    
+    try: 
+        maximo = calcular_maximo_senal(datos)
+        minimo = calcular_minimo_senal(datos)
     except ValueError as e:
+        
         raise ValueError(e)
-    
     amplitud = maximo - minimo #suponiendo que la amplitud es esto 
     return amplitud

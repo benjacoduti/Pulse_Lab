@@ -14,7 +14,7 @@ try:
 
     print(f'El promedio de la senal es: {promedio}')
     print(f'La frequencia cardiaca promedio es de {fc}Hz')
-    print(f'El maximo de la señal es de {senal_max} y el minimo es de {senal_min}')
+    print(f'El maximo de la señal es de {senal_max} y el minimo es de {senal_min}\n')
 
     participante = filtrar_por_participante(datos)
     print(f'Se encontro a un participante con el id {participante["id"]}')
@@ -22,8 +22,13 @@ try:
     promedio_participante = calcular_promedio_senal([participante])
     max_participante = calcular_maximo_senal([participante])
     min_participante = calcular_minimo_senal([participante])
-    amplitud_participante = calcular_amplitud_senal(max_participante, min_participante)
-    print(f'\n| El promedio del participante {participante["id"]} es de {promedio_participante}\n| Su maximo es de {max_participante}\n| Su minimo es de {min_participante}\n| Su amplitud es de {amplitud_participante}\n| Su frequencia es de {fc_participante}Hz')
+    amplitud_participante = calcular_amplitud_senal([participante])
+    
+    print(f'| El promedio del participante {participante["id"]} es de {promedio_participante}\n'
+          f'| Su maximo es de {max_participante}\n'
+          f'| Su minimo es de {min_participante}\n'
+          f'| Su amplitud es de {amplitud_participante}\n'
+          f'| Su frequencia es de {fc_participante}Hz')
 
 except ValueError as e:
     print("[ERROR CRITICO] Tipo de error: ValueError. Descripcion:", e)

@@ -144,11 +144,11 @@ def calcular_amplitud_senal(datos) -> float:
     Calcula la amplitud de la señal ECG.
     La amplitud se define como la diferencia entre el valor máximo y el valor mínimo.
     Parmet.:
-     datos : list
+    datos : list
             Lista de diccionarios, donde cada diccionario contiene un valor de señal en la clave "valor".
     Retorna:
     amplitud : float
-        La amplitud de la señal.
+            La amplitud de la señal.
         
     Raises: Propaga errores de calcular maximo y minimo senal 
     """

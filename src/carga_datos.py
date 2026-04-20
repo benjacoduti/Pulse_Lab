@@ -61,7 +61,7 @@ def parsear_linea(linea:str)->list:
     linea = linea.strip("\n")
     linea_parseada = linea.split(",") #!!! split con (",") o (";") ?
 
-    if len(linea_parseada) < 6:
+    if len(linea_parseada) != 6:
         raise ValueError("La linea no contiene las 6 columnas requeridas - Se detecto en parsear_linea")
 
     dato = None

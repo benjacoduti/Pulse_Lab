@@ -17,6 +17,8 @@ def filtrar_por_participante(datos: list) -> dict:
         
     Raises
     ------
+    ValueError
+        si no se encuentra en la lista de registros
     Exception
         No hay participante con ese id ingresado
     """

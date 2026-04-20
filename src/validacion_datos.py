@@ -1,3 +1,6 @@
+import numpy as np
+
+
 def validar_linea(linea:list) ->list:
     """
     Válida una línea recibida y castea a diferentes tipos de datos si es posible
@@ -30,6 +33,8 @@ def validar_linea(linea:list) ->list:
         dato = "señal"
         valor = linea[2]
         validar_entero_positivo(valor, dato)
+        if valor > 2: #umbral arbitrario para limitar
+            raise ValueError(f'Error, el valor de la señal debe ser menor que 2')
 
         dato = "fase"
         fase = linea[3]
@@ -37,11 +42,7 @@ def validar_linea(linea:list) ->list:
 
         dato = "condición experimental"
         condicion_experimental = linea[4]
-        validar_string_categorias(condicion_experimental, ['cooperación', 'competencia'], dato)
-
-        dato = "hit"
-        hit = linea[5]
-        validar_string_categorias(hit, ['True', 'False'], dato)
+        validar_string_categorias(condicion_experimental, ['cooperacion', 'competencia'], dato)
     except ValueError as e:
         raise ValueError(e)
     else:
@@ -90,3 +91,18 @@ def validar_string_categorias(valor, categorias, nombre_del_campo):
         raise ValueError(f'El valor de {nombre_del_campo} debe ser {categorias} - se detecto en validar_string_categorias')  
     else:
          return True
+
+def validar_tiempos_ordenados(datos: list) -> bool:
+    """
+    Recibe una lista con los datos (diccionarios) de los pacientes y se fija si los tiempos están ordenados de forma creciente
+    :param datos: lista con los diccionarios de cada paciente
+    :return: bool True si están ordenados
+    :raises: ValueError si no están ordenados los valores de tiempo de algún participante
+    """
+    for d in datos:
+        tiempos = []
+        for t in d["tiempo"]:
+            tiempos.append(t)
+        if np.any(np.diff(tiempos) <= 0):
+            raise ValueError("Los valores de tiempo deben estar ordenados de forma creciente - se detecto validar_tiempos_ordenados")
+    return True

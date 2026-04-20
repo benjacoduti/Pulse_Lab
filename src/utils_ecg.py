@@ -36,8 +36,8 @@ def detectar_picos_qrs(tiempos, senal, umbral=0.8, distancia_minima=0.3, debug=F
     if len(tiempos) == 0 or len(senal) == 0:
         raise ValueError("Las listas 'tiempos' y 'senal' no pueden estar vacías - Se detectó detectar_picos_qrs")
 
-    if np.any(np.diff(tiempos) <= 0):
-        raise ValueError("Los valores de 'tiempos' deben estar ordenados de forma creciente - Se detectó en detectar_picos_qrs")
+    # if np.any(np.diff(tiempos) <= 0):
+    #     raise ValueError("Los valores de 'tiempos' deben estar ordenados de forma creciente - Se detectó en detectar_picos_qrs")
 
     if len(tiempos) < 3:
         raise ValueError("Tiempo de registro demasiado corto para detectar picos - Se detectó en detectar_picos_qrs")

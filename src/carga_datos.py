@@ -1,4 +1,6 @@
 from src.validacion_datos import validar_linea
+from validacion_datos import validar_tiempos_ordenados
+
 
 # Abrir Archivo
 def abrir_archivo(ruta:str)->list:
@@ -65,22 +67,27 @@ def parsear_linea(linea:str)->list:
     dato = None
     try:
         dato = "id"
-        linea[0] = int(linea[0])
+        linea_parseada[0] = int(linea_parseada[0])
 
         dato = "tiempo"
-        linea[1] = float(linea[1])
+        linea_parseada[1] = float(linea_parseada[1])
 
         dato = "señal"
-        linea[2] = float(linea[2])
+        linea_parseada[2] = float(linea_parseada[2])
 
         dato = "fase"
-        linea[3] = str(linea[3])
+        linea_parseada[3] = str(linea_parseada[3])
 
         dato = "condición experimental"
-        linea[4] = str(linea[4])
+        linea_parseada[4] = str(linea_parseada[4])
 
         dato = "hit"
-        linea[5] = bool(linea[5])
+        if linea_parseada[5] == "True":
+            linea_parseada[5] = True
+        elif linea_parseada[5] == "False":
+            linea_parseada[5] = False
+        else:
+            raise TypeError
 
     except TypeError:
         raise TypeError(f"Error de tipo en {dato} - Se detectó en pasear_linea")
@@ -163,5 +170,9 @@ def cargar_datos(ruta:str)->list:
             registro_participante["fase"].append(fase)
             registro_participante["condicion_experimental"].append(condicion_experimental)
             registro_participante["hit"].append(hit)
-    
+    #Validar que los tiempos de cada participante esten ordenados
+    try:
+        validar_tiempos_ordenados(datos)
+    except ValueError as e:
+        raise ValueError(e)
     return datos

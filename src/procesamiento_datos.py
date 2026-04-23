@@ -1,4 +1,4 @@
-from validacion_datos import pedir_id
+from src.validacion_datos import pedir_id
 
 def filtrar_por_participante(datos: list) -> dict:
     """

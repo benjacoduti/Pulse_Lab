@@ -1,6 +1,4 @@
-from src.validacion_datos import validar_linea
-from validacion_datos import validar_tiempos_ordenados
-
+from src.validacion_datos import validar_tiempos_ordenados, validar_linea
 
 # Abrir Archivo
 def abrir_archivo(ruta:str)->list:

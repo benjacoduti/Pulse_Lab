@@ -1,5 +1,4 @@
 from src.utils_ecg import detectar_picos_qrs
-from validacion_datos import validar_entero_positivo
 
 def calcular_frecuencia_cardiaca(picos: list) -> float:
     """
@@ -56,7 +55,7 @@ def calcular_fc_desde_datos(datos: list) -> float:
     return round(promedio_fc, 3)
 
 def calcular_promedio_senal(datos: list) -> float:
-    '''
+    """
     Recibe un lista de los registros de los participantes, analiza sus datos y guarda las señales de cada participante.
     (Puede calcular las métricas en función de un único participante también, si se pasa el diccionario dentro de una lista)
     Finalmente, calcula un promedio de señales totales en base a los datos de todos los participantes.
@@ -70,10 +69,10 @@ def calcular_promedio_senal(datos: list) -> float:
     -------
     promedio : float
         Promedio de señales totales
-        
-    Raises: ValueError si no hay datos de los participantes        
 
-    '''
+    Raises: ValueError si no hay datos de los participantes
+
+    """
     if datos is None or len(datos) == 0:
         raise ValueError("La lista se encuentra vacía - Se detectó en calcular_promedio_senal")
 

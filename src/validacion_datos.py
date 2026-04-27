@@ -34,7 +34,7 @@ def validar_linea(linea:list) ->list:
         valor = linea[2]
         validar_entero_positivo(valor, dato)
         if valor > 2: #umbral arbitrario para limitar
-            raise ValueError(f'Error, el valor de la señal debe ser menor que 2')
+            raise ValueError(f'Error, el valor de la señal debe ser menor que 2 - se detecto en validar_linea')
 
         dato = "fase"
         fase = linea[3]
@@ -60,7 +60,7 @@ def pedir_id():
                 return i_d
         
         except ValueError:
-            print('Error, el id del participante debe ser un numero')
+            print('Error, el id del participante debe ser un numero entero positivo')
 
 def validar_entero_positivo(num, nombre_campo):
     """

@@ -1,11 +1,14 @@
 from src.carga_datos import cargar_datos
 from src.metricas import calcular_fc_desde_datos, calcular_maximo_senal, calcular_minimo_senal, calcular_amplitud_senal, calcular_promedio_senal
 from src.procesamiento_datos import filtrar_por_participante
+from src.graficos import verificar_carpeta_grafico
 
-ruta = './datos/PulseLab_mock_data.csv'
+nombre_archivo = 'PulseLab_mock_data.csv'
 
 try:
-    datos = cargar_datos(ruta)
+    datos = cargar_datos(nombre_archivo)
+
+    verificar_carpeta_grafico()
 
     promedio = calcular_promedio_senal(datos)
     fc = calcular_fc_desde_datos(datos)

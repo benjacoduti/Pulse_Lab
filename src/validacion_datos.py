@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def validar_linea(linea:list) ->list:
+def validar_df(df) ->list:
     """
     Válida una línea recibida y castea a diferentes tipos de datos si es posible
     Los datos se encuentran ordenados por posición, lo que vuelve posible
@@ -21,32 +21,23 @@ def validar_linea(linea:list) ->list:
     ------
         ValueError si el casteo no puede llevarse a cabo
     """
-    try:
-        dato = "id"
-        i_d = linea[0]
-        validar_entero_positivo(i_d, dato)
-
-        dato = "tiempo"
-        tiempo = linea[1]
-        validar_entero_positivo(tiempo, dato)
-
-        dato = "señal"
-        valor = linea[2]
-        validar_entero_positivo(valor, dato)
-        if valor > 2: #umbral arbitrario para limitar
-            raise ValueError(f'Error, el valor de la señal debe ser menor que 2 - se detecto en validar_linea')
-
-        dato = "fase"
-        fase = linea[3]
-        validar_string_categorias(fase, ['baseline', 'tarea'], dato)
-
-        dato = "condición experimental"
-        condicion_experimental = linea[4]
-        validar_string_categorias(condicion_experimental, ['cooperacion', 'competencia'], dato)
-    except ValueError as e:
-        raise ValueError(e)
-    else:
-        return linea
+    
+    if df[['id' < 0]].any():
+        raise ValueError('Existe un id que no es un numero entero positivo - Se detectó en validar_df')
+        
+    if df[['tiempo' < 0]].any():
+        raise ValueError('Existe un tiempo que no es un numero entero positivo - Se detectó en validar_df')
+    
+    if df[[2 < 'senal' < 0]].any():
+        raise ValueError('Existe una señal que o no es un numero entero positivo o es mayor a 2 - Se detectó en validar_df')
+    
+    if df[[('fase' != 'baseline') & ('fase' != 'tarea')]].any():
+        raise ValueError('Existe una fase que no cumple con lo esperado (baseline o tarea) - Se detectó en validar_df')
+    
+    if df[[('condicion_experimental' != 'cooperacion') & ('condicion_experimental' != 'competencia')]].any():
+        raise ValueError('Existe una condición experimental que no cumple con lo esperado (cooperación o competencia) - Se detectó en validar_df')
+    
+    return df
 
 def pedir_id():
     """

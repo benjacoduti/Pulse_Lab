@@ -1,7 +1,7 @@
-import numpy as np
+import pandas as pd
 
 
-def validar_df(df) ->list:
+def validar_df(df: pd.DataFrame):
     """
     Válida una línea recibida y castea a diferentes tipos de datos si es posible
     Los datos se encuentran ordenados por posición, lo que vuelve posible
@@ -11,33 +11,23 @@ def validar_df(df) ->list:
     ----------
     linea : list
         Linea parseada a revisar
-
-    Returns
-    -------
-    linea : list
-        Linea con los datos correspondientes casteados
-
     Raises
     ------
-        ValueError si el casteo no puede llevarse a cabo
+        ValueError si hay errores en alguna columna
+        :param df:
     """
-    
-    if df[['id' < 0]].any():
-        raise ValueError('Existe un id que no es un numero entero positivo - Se detectó en validar_df')
-        
-    if df[['tiempo' < 0]].any():
-        raise ValueError('Existe un tiempo que no es un numero entero positivo - Se detectó en validar_df')
-    
-    if df[[2 < 'senal' < 0]].any():
-        raise ValueError('Existe una señal que o no es un numero entero positivo o es mayor a 2 - Se detectó en validar_df')
-    
-    if df[[('fase' != 'baseline') & ('fase' != 'tarea')]].any():
-        raise ValueError('Existe una fase que no cumple con lo esperado (baseline o tarea) - Se detectó en validar_df')
-    
-    if df[[('condicion_experimental' != 'cooperacion') & ('condicion_experimental' != 'competencia')]].any():
-        raise ValueError('Existe una condición experimental que no cumple con lo esperado (cooperación o competencia) - Se detectó en validar_df')
-    
+    if ~df['senal'].between(0, 2).any():
+        raise ValueError('Existe una señal que no es un numero entero positivo o es mayor a 2 - Se detectó en validar_df')
+    try:
+        validar_columna_entero_positivo(df, "id")
+        validar_columna_mayor_a_num(df, 'tiempo', 0)
+        validar_columna_categorias(df, ["tarea", "baseline"], 'fase')
+        validar_columna_categorias(df, ["cooperacion", "competencia"], 'condicion_experimental')
+        validar_tiempos_ordenados(df)
+    except ValueError as e:
+        raise ValueError(e, '- Se detectó en validar_df')
     return df
+
 
 def pedir_id():
     """
@@ -47,26 +37,40 @@ def pedir_id():
     while True:
         try:
             i_d = int(input("Ingrese el id del participante: "))
-            if validar_entero_positivo(i_d, "Id ingresado") == True:
+            data = pd.DataFrame({'Id ingresado': i_d})
+            if validar_columna_entero_positivo(data, "Id ingresado"):
                 return i_d
         
         except ValueError:
             print('Error, el id del participante debe ser un numero entero positivo')
 
-def validar_entero_positivo(num, nombre_campo):
+def validar_columna_entero_positivo(df, columna):
     """
     Chequea que el número sea entero postivo
-    :param num: Int
-    :param nombre_campo: str que corresponde a la categoria del dato que se busca validar 
+    :param df: Int
+    :param columna: str que corresponde a la categoria del dato que se busca validar
     :return: Devuelve True si lo valida correctamente o raisea el error si no
     :raise: Value error si el número es negativo
     """
-    if num < 0:
-        raise ValueError(f'Error, el valor de {nombre_campo} no puede ser negativo - se detecto en validar_entero_positivo')
-    else:
-        return True
+    if (df[columna] % 1 != 0).any():
+        raise ValueError(f"La columna '{columna}' contiene valores no enteros.")
+    if (df[columna] <= 0).any():
+        raise ValueError(f"La columna '{columna}' contiene valores no positivos.")
+    return True
+
+def validar_columna_mayor_a_num(df, columna, num):
+    """
+    Chequea que el número sea entero postivo
+    :param df: Int
+    :param columna: str que corresponde a la categoria del dato que se busca validar
+    :return: Devuelve True si lo valida correctamente o raisea el error si no
+    :raise: Value error si el número es negativo
+    """
+    if (df[columna] < num).any():
+        raise ValueError(f"La columna '{columna}' contiene valores menores a {num}.")
+    return True
         
-def validar_string_categorias(valor, categorias, nombre_del_campo):
+def validar_columna_categorias(df, categorias, columna):
     """
     Chequea que el valor este en las categorias
     valor : str es el valor a chequear
@@ -75,22 +79,25 @@ def validar_string_categorias(valor, categorias, nombre_del_campo):
     Raises: Value error si el valor no esta en categorias
     Returns: Devuelve True si lo valida correctamente o raisea el error si no
     """
-    if valor not in categorias:
-        raise ValueError(f'El valor de {nombre_del_campo} debe ser {categorias} - se detecto en validar_string_categorias')  
-    else:
-         return True
+    if (~df[columna].isin(categorias)).any():
+        raise ValueError(
+            f"La columna '{columna}' contiene valores fuera de {categorias}."
+        )
 
-def validar_tiempos_ordenados(datos: list) -> bool:
+    return True
+
+def validar_tiempos_ordenados(df, id_col='id', tiempo_col='tiempo') -> bool:
     """
     Recibe una lista con los datos (diccionarios) de los pacientes y se fija si los tiempos están ordenados de forma creciente
     :param datos: lista con los diccionarios de cada paciente
     :return: bool True si están ordenados
     :raises: ValueError si no están ordenados los valores de tiempo de algún participante
     """
-    for d in datos:
-        tiempos = []
-        for t in d["tiempo"]:
-            tiempos.append(t)
-        if np.any(np.diff(tiempos) <= 0):
-            raise ValueError("Los valores de tiempo deben estar ordenados de forma creciente - se detecto validar_tiempos_ordenados")
+    diferencias = df.groupby(id_col)[tiempo_col].diff()
+
+    if diferencias.le(0).any():
+        raise ValueError(
+            f"La columna '{tiempo_col}' contiene tiempos no crecientes."
+        )
+
     return True

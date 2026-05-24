@@ -1,6 +1,8 @@
+import pandas as pd
+
 from src.validacion_datos import pedir_id
 
-def filtrar_por_participante(datos: list) -> dict:
+def filtrar_por_participante(df: pd.DataFrame) -> pd.DataFrame:
     """
     Recibe una lista con registros de participantes en donde se desea buscar;
     filtra al participante cuyo id sea igual al ingresado por consola
@@ -23,15 +25,12 @@ def filtrar_por_participante(datos: list) -> dict:
         No hay participante con ese id ingresado
     """
     i=0
-    
-    id_participante = pedir_id()
-        
-    while i <len(datos): 
-        
-        if datos[i]["id"] == id_participante:
-            return datos[i]
-        else:
-            i += 1
-    
-    raise Exception("No se encontró participante alguno con el id ingresado - Se detectó en filtrar_por_participante")
+    try:
+        id_participante = pedir_id()
+        participante = df[df['id'] == id_participante]
+    except ValueError as e:
+        raise ValueError(e)
+    except Exception as e:
+        raise Exception(f'No se encontró participante alguno con el id ingresado {e}- Se detectó en filtrar_por_participante')
+    return participante
 

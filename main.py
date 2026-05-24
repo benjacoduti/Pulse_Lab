@@ -10,17 +10,17 @@ try:
 
     verificar_carpeta_grafico()
 
-    promedio = calcular_promedio_senal(datos)
-    fc = calcular_fc_desde_datos(datos)
-    senal_max, senal_min = calcular_maximo_senal(datos), calcular_minimo_senal(datos)
-    amplitud = calcular_amplitud_senal(datos)
+    # promedio = calcular_promedio_senal(datos)
+    # fc = calcular_fc_desde_datos(datos)
+    # senal_max, senal_min = calcular_maximo_senal(datos), calcular_minimo_senal(datos)
+    # amplitud = calcular_amplitud_senal(datos)
 
     participante = filtrar_por_participante(datos)
-    fc_participante = calcular_fc_desde_datos([participante])
-    promedio_participante = calcular_promedio_senal([participante])
-    max_participante = calcular_maximo_senal([participante])
-    min_participante = calcular_minimo_senal([participante])
-    amplitud_participante = calcular_amplitud_senal([participante])
+    fc_participante = calcular_fc_desde_datos(participante)
+    promedio_participante = calcular_promedio_senal(participante)
+    max_participante = calcular_maximo_senal(participante)
+    min_participante = calcular_minimo_senal(participante)
+    amplitud_participante = calcular_amplitud_senal(participante)
 except ValueError as e:
     print("[ERROR CRITICO] Tipo de error: ValueError. Descripción:", e)
 except TypeError as e:
@@ -30,9 +30,9 @@ except ZeroDivisionError as e:
 except Exception as e:
     print ("[ERROR INESPERADO] Tipo de error: Exception. Descripción:", e)
 else:
-    print(f'El promedio de la senal es: {promedio}')
-    print(f'La frequencia cardiaca promedio es de {fc}Hz')
-    print(f'El maximo de la señal es de {senal_max} y el minimo es de {senal_min}\n')
+    # print(f'El promedio de la senal es: {promedio}')
+    # print(f'La frequencia cardiaca promedio es de {fc}Hz')
+    # print(f'El maximo de la señal es de {senal_max} y el minimo es de {senal_min}\n')
     #Especifico a un participante
     print(f'Se encontro a un participante con el id {participante["id"]}')
     print(f'| El promedio del participante {participante["id"]} es de {promedio_participante}\n'

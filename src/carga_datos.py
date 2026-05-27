@@ -40,6 +40,11 @@ def normalizar_datos(df: pd.DataFrame) -> pd.DataFrame:
     """
     Devuelve una copia del DataFrame con los tipos usados por el resto del sistema.
     """
+    categorias = ['id','tiempo','senal','fase','condicion_experimental','hit']
+    
+    if df is None or df.columns.tolist() != categorias:
+        raise ValueError('El DataFrame posee columnas distintas a las requeridas para la normalización - Se detectó en normalizar datos')
+    
     datos = df.copy()
     try:
         datos["id"] = pd.to_numeric(datos["id"]).astype("int64")

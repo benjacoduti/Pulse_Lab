@@ -1,5 +1,7 @@
 from src.utils_ecg import detectar_picos_qrs
 
+import pandas as pd
+
 def calcular_frecuencia_cardiaca(picos: list) -> float:
     """
     Recibe una lista de tiempos en los que sucedieron picos en la señal, calcula y devuelve la frequencia de estos eventos.
@@ -15,16 +17,14 @@ def calcular_frecuencia_cardiaca(picos: list) -> float:
     if len(picos) < 2:
         raise ValueError("El numero de picos debe ser mayor que 2 - Se detecto en calcular_frecuencia_cardiaca")
     else:
-            periodos = []
-            for i in range(len(picos) - 1):
-                periodos.append(picos[i + 1] - picos[i])
-            promedio = sum(periodos) / len(periodos)
-            try:
-                return 1 / promedio #La frequencia la calculamos como 1 sobre el promedio de distancia entre picos
-            except:
-                raise ZeroDivisionError("Se dividió por 0 debido a que la distancia promedio entre picos es 0 - Se detectó en calcular_frecuencia_cardiaca")
+        picos = pd.DataFrame(picos)
+        promedio = picos.diff().mean()
+        try:
+            return 1 / promedio #La frequencia la calculamos como 1 sobre el promedio de distancia entre picos
+        except:
+            raise ZeroDivisionError("Se dividió por 0 debido a que la distancia promedio entre picos es 0 - Se detectó en calcular_frecuencia_cardiaca")
             
-def calcular_fc_desde_datos(datos: list) -> float:
+def calcular_fc_desde_datos(df) -> float:
     """
     Recibe una lista de diccionarios correspondientes a cada participante. 
     (Puede calcular las métricas en función de un único participante también, si se pasa el diccionario dentro de una lista)
@@ -39,22 +39,20 @@ def calcular_fc_desde_datos(datos: list) -> float:
              Propaga errores de calcular_frecuencia_car´diaca y de detectar_picos_qrs
     
     """
-    if datos is None or len(datos) == 0:
-        raise ValueError("La lista se encuentra vacía - Se detectó en calcular_fc_desde_datos")
-    frequencias = []
-    for d in datos:
-        try:
-            picos = detectar_picos_qrs(d['tiempo'], d['valor'], 0.8,0.3)
-            fc = calcular_frecuencia_cardiaca(picos)
-            frequencias.append(fc)
-        except ZeroDivisionError as e:
-            raise ZeroDivisionError(e)
-        except ValueError as e:
-            raise ValueError(e)            
-    promedio_fc = sum(frequencias) / len(frequencias)
-    return round(promedio_fc, 3)
+    categorias = ['id','tiempo','senal','fase','condicion_experimental','hit']
+   
+    if df is None or df.columns.tolist() != categorias:
+        raise ValueError('El DataFrame posee columnas distintas a las requeridas para la normalización - Se detectó en normalizar datos')
+    try:
+        picos = detectar_picos_qrs(df['tiempo'].tolist(), df['valor'].tolist(), 0.8,0.3)
+        fc = calcular_frecuencia_cardiaca(picos)
+    except ZeroDivisionError as e:
+        raise ZeroDivisionError(e)
+    except ValueError as e:
+        raise ValueError(e)            
+    return fc
 
-def calcular_promedio_senal(datos: list) -> float:
+def calcular_promedio_senal(df) -> float:
     """
     Recibe un lista de los registros de los participantes, analiza sus datos y guarda las señales de cada participante.
     (Puede calcular las métricas en función de un único participante también, si se pasa el diccionario dentro de una lista)
@@ -73,24 +71,14 @@ def calcular_promedio_senal(datos: list) -> float:
     Raises: ValueError si no hay datos de los participantes
 
     """
-    if datos is None or len(datos) == 0:
-        raise ValueError("La lista se encuentra vacía - Se detectó en calcular_promedio_senal")
-
-    lista_senales = []
-    i = 0
-
-    while i < len(datos):
-        
-        valores = datos[i]["valor"]
-        lista_senales.extend(valores)
-        i += 1 
-        
-    promedio = sum(lista_senales) / len(lista_senales)
+    categorias = ['id','tiempo','senal','fase','condicion_experimental','hit']
+   
+    if df is None or df.columns.tolist() != categorias:
+        raise ValueError('El DataFrame posee columnas distintas a las requeridas para la normalización - Se detectó en normalizar datos')
     
-    return round(promedio, 2)
+    return df.mean()
 
-
-def calcular_minimo_senal(datos: list) -> float:
+def calcular_minimo_senal(df) -> float:
     """
     Calcula el valor mínimo de la señal ECG.
     (Puede calcular las métricas en función de un único participante también, si se pasa el diccionario dentro de una lista)
@@ -104,17 +92,13 @@ def calcular_minimo_senal(datos: list) -> float:
     Raises: ValueError si la lista se encuentra vacía
     
     """
-    if datos is None or len(datos) == 0:
-        raise ValueError("La lista se encuentra vacía - Se detectó en calcular_minimo_senal")
+    categorias = ['id','tiempo','senal','fase','condicion_experimental','hit']
+   
+    if df is None or df.columns.tolist() != categorias:
+        raise ValueError('El DataFrame posee columnas distintas a las requeridas para la normalización - Se detectó en normalizar datos')
+    return df["senal"].min()
     
-    valores_minimos = []
-    for dato in datos:
-        valores_minimos.append(min(dato["valor"]))
-        
-    minimo = min(valores_minimos)
-    return minimo
-
-def calcular_maximo_senal(datos: list) -> float:
+def calcular_maximo_senal(df) -> float:
     """
     Calcula el valor máximo de la señal ECG.
     (Puede calcular las métricas en función de un único participante también, si se pasa el diccionario dentro de una lista)
@@ -128,17 +112,14 @@ def calcular_maximo_senal(datos: list) -> float:
     Raises: ValueError si la lista se encuentra vacía
         
     """
-    if datos is None or len(datos) == 0:
-        raise ValueError("La lista se encuentra vacía - Se detectó en calcular_maximo_senal")
+    categorias = ['id','tiempo','senal','fase','condicion_experimental','hit']
+   
+    if df is None or df.columns.tolist() != categorias:
+        raise ValueError('El DataFrame posee columnas distintas a las requeridas para la normalización - Se detectó en normalizar datos')
     
-    valores_maximos = []
-    for dato in datos:
-        valores_maximos.append(max(dato["valor"]))
-    
-    maximo = max(valores_maximos)
-    return maximo
+    return df["senal"].max()
 
-def calcular_amplitud_senal(datos) -> float:
+def calcular_amplitud_senal(df) -> float:
     """
     Calcula la amplitud de la señal ECG.
     La amplitud se define como la diferencia entre el valor máximo y el valor mínimo.
@@ -151,11 +132,14 @@ def calcular_amplitud_senal(datos) -> float:
         
     Raises: Propaga errores de calcular maximo y minimo senal 
     """
+    categorias = ['id','tiempo','senal','fase','condicion_experimental','hit']
+   
+    if df is None or df.columns.tolist() != categorias:
+        raise ValueError('El DataFrame posee columnas distintas a las requeridas para la normalización - Se detectó en normalizar datos')
     try: 
-        maximo = calcular_maximo_senal(datos)
-        minimo = calcular_minimo_senal(datos)
+        maximo = calcular_maximo_senal(df)
+        minimo = calcular_minimo_senal(df)
     except ValueError as e:
-        
         raise ValueError(e)
     amplitud = maximo - minimo #suponiendo que la amplitud es esto 
     return amplitud

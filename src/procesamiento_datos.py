@@ -24,13 +24,13 @@ def filtrar_por_participante(df: pd.DataFrame) -> pd.DataFrame:
     Exception
         No hay participante con ese id ingresado
     """
-    i=0
     try:
         id_participante = pedir_id()
         participante = df[df['id'] == id_participante]
+        if participante.size == 0:
+            raise ValueError(f'No se encontró participante alguno con el id ingresado {id_participante}- Se detectó en filtrar_por_participante')
     except ValueError as e:
         raise ValueError(e)
-    except Exception as e:
-        raise Exception(f'No se encontró participante alguno con el id ingresado {e}- Se detectó en filtrar_por_participante')
-    return participante
+    else:
+        return participante
 

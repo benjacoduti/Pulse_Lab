@@ -76,7 +76,7 @@ def calcular_promedio_senal(df) -> float:
     if df is None or df.columns.tolist() != categorias:
         raise ValueError('El DataFrame posee columnas distintas a las requeridas para la normalización - Se detectó en normalizar datos')
     
-    return df.mean()
+    return df['senal'].mean()
 
 def calcular_minimo_senal(df) -> float:
     """

@@ -1,3 +1,4 @@
+from graficos import graficar_por_fase
 from src.carga_datos import cargar_datos
 from src.metricas import calcular_fc_desde_datos, calcular_maximo_senal, calcular_minimo_senal, calcular_amplitud_senal, calcular_promedio_senal
 from src.procesamiento_datos import filtrar_por_participante
@@ -16,11 +17,12 @@ try:
     # amplitud = calcular_amplitud_senal(datos)
 
     participante = filtrar_por_participante(datos)
-    fc_participante = calcular_fc_desde_datos(participante)
-    promedio_participante = calcular_promedio_senal(participante)
-    max_participante = calcular_maximo_senal(participante)
-    min_participante = calcular_minimo_senal(participante)
-    amplitud_participante = calcular_amplitud_senal(participante)
+    graficar_por_fase(datos)
+    # fc_participante = calcular_fc_desde_datos(participante)
+    # promedio_participante = calcular_promedio_senal(participante)
+    # max_participante = calcular_maximo_senal(participante)
+    # min_participante = calcular_minimo_senal(participante)
+    # amplitud_participante = calcular_amplitud_senal(participante)
 except ValueError as e:
     print("[ERROR CRITICO] Tipo de error: ValueError. Descripción:", e)
 except TypeError as e:

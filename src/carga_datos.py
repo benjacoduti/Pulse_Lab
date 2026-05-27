@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from src.validacion_datos import validar_df
+from src.validacion_datos import validar_df, validar_columna_categorias
 
 
 def resolver_ruta_datos(nombre_archivo: str) -> Path:
@@ -52,9 +52,12 @@ def normalizar_datos(df: pd.DataFrame) -> pd.DataFrame:
         datos["senal"] = pd.to_numeric(datos["senal"]).astype("float64")
         datos["fase"] = datos["fase"].astype("string")
         datos["condicion_experimental"] = datos["condicion_experimental"].astype("string")
+        validar_columna_categorias(datos, [False, True], 'hit')
         datos["hit"] = datos["hit"].map({"True": True, "False": False}).astype("bool")
+    except ValueError as e:
+        raise ValueError(f'{e} - Se detecto normalizar_datos')
     except TypeError as e:
-        raise TypeError(e)
+        raise TypeError(f'{e} - Se detecto normalizar_datos')
     else:
         return datos
 
@@ -67,6 +70,8 @@ def cargar_datos(nombre_archivo: str) -> pd.DataFrame:
     """
     try:
         df = abrir_archivo(nombre_archivo)
+        if df.isna().any().any():
+            raise ValueError("Error crítico: El archivo contiene campos vacíos o valores nulos (NaN). - Se detecto en cargar_datos")
         datos = normalizar_datos(df)
         datos_validos = validar_df(datos)
     except FileNotFoundError as e:

@@ -25,10 +25,7 @@ def filtrar_por_participante(df: pd.DataFrame) -> pd.DataFrame:
         No hay participante con ese id ingresado
     """
     try:
-        id_participante = pedir_id()
-        participante = df[df['id'] == id_participante]
-        if participante.size == 0:
-            raise ValueError(f'No se encontró participante alguno con el id ingresado {id_participante}- Se detectó en filtrar_por_participante')
+        participante = pedir_id(df)
     except ValueError as e:
         raise ValueError(e)
     else:

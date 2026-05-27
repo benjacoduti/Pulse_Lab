@@ -29,7 +29,7 @@ def validar_df(df: pd.DataFrame):
     return df
 
 
-def pedir_id():
+def pedir_id(df: pd.DataFrame):
     """
     Pide al usuario por consola un id que debe ser un número entero positivo.
     :return: id de participante válido
@@ -39,8 +39,11 @@ def pedir_id():
             i_d = int(input("Ingrese el id del participante: "))
             data = pd.DataFrame({'Id ingresado': [i_d]})
             if validar_columna_entero_positivo(data, "Id ingresado"):
-                return i_d
-        
+                participante = df[df['id'] == i_d]
+                if participante.size == 0:
+                    print(f'No se encontró participante alguno con el id ingresado {i_d} - Se detectó en filtrar_por_participante')
+                else:
+                    return participante
         except ValueError:
             print('Error, el id del participante debe ser un numero entero positivo')
 

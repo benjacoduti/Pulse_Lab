@@ -1,8 +1,6 @@
 import os
 from pathlib import Path
-
 import pandas as pd
-
 from src.validacion_datos import validar_df, validar_columna_categorias
 
 
@@ -71,7 +69,7 @@ def cargar_datos(nombre_archivo: str) -> pd.DataFrame:
     try:
         df = abrir_archivo(nombre_archivo)
         if df.isna().any().any():
-            raise ValueError("Error crítico: El archivo contiene campos vacíos o valores nulos (NaN). - Se detecto en cargar_datos")
+            raise ValueError("El archivo contiene campos vacíos o valores nulos (NaN). - Se detecto en cargar_datos")
         datos = normalizar_datos(df)
         datos_validos = validar_df(datos)
     except FileNotFoundError as e:

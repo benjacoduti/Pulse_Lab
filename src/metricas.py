@@ -1,5 +1,4 @@
 from src.utils_ecg import detectar_picos_qrs
-
 import pandas as pd
 
 def calcular_frecuencia_cardiaca(picos: list) -> float:

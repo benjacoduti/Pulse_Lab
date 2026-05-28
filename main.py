@@ -1,4 +1,4 @@
-from graficos import graficar_por_fase
+from src.graficos import graficar_por_fase
 from src.carga_datos import cargar_datos
 from src.metricas import calcular_fc_desde_datos, calcular_maximo_senal, calcular_minimo_senal, calcular_amplitud_senal, calcular_promedio_senal
 from src.procesamiento_datos import filtrar_por_participante
@@ -28,9 +28,10 @@ except ZeroDivisionError as e:
 except Exception as e:
     print ("[ERROR INESPERADO] Tipo de error: Exception. Descripción:", e)
 else:
-    print(f'Se encontro a un participante con el id {int(participante["id"].mean())}')
-    print(f'| El promedio del participante {int(participante['id'].mean())} es de {promedio_participante}\n'
-          f'| Su maximo es de {max_participante}\n'
-          f'| Su minimo es de {min_participante}\n'
+    print(f'| Se encontro a un participante con el id {int(participante["id"].mean())}')
+    print(f'| El promedio de señal del participante {int(participante['id'].mean())} es de:\n'
+          f'| {promedio_participante}\n'
+          f'| Su máxima señal es de {max_participante}\n'
+          f'| Su mínima señal es de {min_participante}\n'
           f'| Su amplitud es de {amplitud_participante}\n'
-          f'| Su frequencia es de {fc_participante}Hz')
+          f'| Su frequencia es de {fc_participante} Hz')

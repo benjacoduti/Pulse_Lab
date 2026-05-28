@@ -1,6 +1,5 @@
 import pandas as pd
 
-
 def validar_df(df: pd.DataFrame):
     """
     Válida una línea recibida y castea a diferentes tipos de datos si es posible

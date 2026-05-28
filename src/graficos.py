@@ -4,67 +4,56 @@ from matplotlib import pyplot as plt
 
 
 def verificar_carpeta_grafico():
+    """
+    Verifica que exista la carpeta donde se guardan los gráficos.
+    """
     if not  os.path.exists('./graficos'):
         os.mkdir('./graficos')
 
 def graficar_por_fase(df: pd.DataFrame):
-    promedio_señal = df.groupby('fase')['senal'].mean()
+    """
+    Grafica la cantidad de hits por fase.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        DataFrame con los datos del experimento. Debe contener las columnas
+        `fase` y `hit`.
+
+    Returns
+    -------
+    None
+        No devuelve ningún valor.
+    """
     cant_hits = df.groupby('fase')['hit'].sum()
 
-    fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+    plt.figure(figsize=(8, 5))
 
-    # Gráfico promedio señal
-    promedio_señal.plot(
-        kind='bar',
-        ax=axes[0],
-        color=['#1e3a8a', '#b91c1c'],
-        edgecolor='black',
-        alpha=0.8
-    )
-
-    axes[0].set_title('Promedio de Señal')
-    axes[0].set_xlabel('Fase')
-    axes[0].set_ylabel('Señal Promedio')
-    axes[0].grid(True, linestyle='--', alpha=0.5, axis='y')
-
-    # Gráfico cantidad de hits
     cant_hits.plot(
         kind='bar',
-        ax=axes[1],
-        color=['#1e3a8a', '#b91c1c'],
+        color='#1e3a8a',
         edgecolor='black',
         alpha=0.8
     )
 
-    axes[1].set_title('Cantidad de Hits')
-    axes[1].set_xlabel('Fase')
-    axes[1].set_ylabel('Cantidad de Hits')
-    axes[1].grid(True, linestyle='--', alpha=0.5, axis='y')
-
-    plt.suptitle(
-        'Comparación de Métricas por Condición Experimental',
-        fontsize=13,
-        fontweight='bold'
-    )
-
-    axes[0].tick_params(axis='x', rotation=0)
-    axes[1].tick_params(axis='x', rotation=0)
-    plt.savefig('./graficos/graficos_comparacion.png', dpi=300)
-    plt.show()
+    plt.title('Cantidad de hits por fase', fontsize=13, fontweight='bold')
+    plt.xlabel('Fase')
+    plt.ylabel('Cantidad de hits')
+    plt.xticks(rotation=0)
+    plt.grid(True, linestyle='--', alpha=0.5, axis='y')
+    plt.tight_layout()
+    plt.savefig('./graficos/hits_por_fase.png', dpi=300)
     plt.close()
 
-def graficar_senal_tiempo_participante(df_participante):
+def graficar_senal_tiempo_participante(df_participante: pd.DataFrame):
     """
     Grafica la señal en función del tiempo para un único participante.
-
-    Parámetros
+    Parameters
     ----------
     df_participante : pd.DataFrame
-        DataFrame correspondiente a un solo participante.
-        Debe contener las columnas:
-        - 'tiempo'
-        - 'senal'
+        DataFrame con los registros de tiempo y señal del participante.
     """
+    id_participante = df_participante['id'].iloc[0]
     plt.figure(figsize=(9, 5))
 
     plt.scatter(
@@ -75,7 +64,7 @@ def graficar_senal_tiempo_participante(df_participante):
     )
 
     plt.title(
-        'Señal en función del tiempo',
+        f'Señal en función del tiempo del participante {id_participante}',
         fontsize=13,
         fontweight='bold'
     )
@@ -90,12 +79,17 @@ def graficar_senal_tiempo_participante(df_participante):
     )
 
     plt.tight_layout()
-    plt.savefig('./graficos/grafico_señal_participante.png', dpi=300)
-    plt.show()
+    plt.savefig(f'./graficos/grafico_señal_participante_{id_participante}.png', dpi=300)
     plt.close()
 
 def graficar_senal_por_fase(df: pd.DataFrame):
-    ""
+    """
+    Grafica la distribución de la señal según la fase experimental.
+    Parameters
+    ----------
+    df : pd.DataFrame
+        DataFrame con registros de fase y señal.
+    """
     plt.figure(figsize=(9, 5))
 
     colores = {
@@ -136,5 +130,4 @@ def graficar_senal_por_fase(df: pd.DataFrame):
 
     plt.tight_layout()
     plt.savefig('./graficos/grafico_señal_por_fase.png', dpi=300)
-    plt.show()
     plt.close()

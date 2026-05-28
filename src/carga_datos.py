@@ -5,6 +5,21 @@ from src.validacion_datos import validar_df, validar_columna_categorias
 
 
 def resolver_ruta_datos(nombre_archivo: str) -> Path:
+    """
+    Resuelve la ruta desde donde se debe cargar el archivo de datos.
+    Parameters
+    ----------
+    nombre_archivo : str
+        Nombre o ruta del archivo de datos.
+    Returns
+    -------
+    Path
+        Ruta absoluta o relativa resuelta para el archivo.
+    Raises
+    ------
+    ValueError
+        Si el nombre del archivo es nulo o está vacío.
+    """
     if nombre_archivo is None or str(nombre_archivo).strip() == "":
         raise ValueError("El nombre del archivo no es valido - Se detecto en abrir_archivo")
 
@@ -17,8 +32,21 @@ def resolver_ruta_datos(nombre_archivo: str) -> Path:
 
 def abrir_archivo(nombre_archivo: str) -> pd.DataFrame:
     """
-    Lee un CSV de datos ECG como texto crudo para que la validacion pueda
-    reportar errores con valores originales y filas reales del archivo.
+    Lee un archivo CSV de datos ECG y asigna las columnas esperadas.
+    Parameters
+    ----------
+    nombre_archivo : str
+        Nombre o ruta del archivo CSV a leer.
+    Returns
+    -------
+    pd.DataFrame
+        Datos cargados con las columnas del sistema.
+    Raises
+    ------
+    FileNotFoundError
+        Si no se encuentra el archivo indicado.
+    ValueError
+        Si el nombre del archivo no es válido o el CSV no puede parsearse.
     """
     ruta = resolver_ruta_datos(nombre_archivo)
 
@@ -36,7 +64,21 @@ def abrir_archivo(nombre_archivo: str) -> pd.DataFrame:
 
 def normalizar_datos(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Devuelve una copia del DataFrame con los tipos usados por el resto del sistema.
+    Normaliza los tipos de datos requeridos por el sistema.
+    Parameters
+    ----------
+    df : pd.DataFrame
+        DataFrame con las columnas esperadas de datos ECG.
+    Returns
+    -------
+    pd.DataFrame
+        Copia del DataFrame con los tipos normalizados.
+    Raises
+    ------
+    ValueError
+        Si el DataFrame no tiene las columnas esperadas o contiene valores inválidos.
+    TypeError
+        Si algún dato no puede convertirse al tipo requerido.
     """
     categorias = ['id','tiempo','senal','fase','condicion_experimental','hit']
     
@@ -62,9 +104,24 @@ def normalizar_datos(df: pd.DataFrame) -> pd.DataFrame:
 def cargar_datos(nombre_archivo: str) -> pd.DataFrame:
     """
     Carga, valida y normaliza un archivo CSV de datos ECG.
-
-    Retorna un DataFrame con columnas:
-    id, tiempo, senal, fase, condicion_experimental y hit.
+    Parameters
+    ----------
+    nombre_archivo : str
+        Nombre o ruta del archivo CSV a cargar.
+    Returns
+    -------
+    pd.DataFrame
+        Datos validados y normalizados.
+    Raises
+    ------
+    FileNotFoundError
+        Si no se encuentra el archivo indicado.
+    ValueError
+        Si el archivo contiene valores nulos o datos inválidos.
+    TypeError
+        Si algún dato no puede convertirse al tipo requerido.
+    Exception
+        Si ocurre un error no contemplado durante la carga.
     """
     try:
         df = abrir_archivo(nombre_archivo)

@@ -1,4 +1,4 @@
-from graficos import graficar_senal_tiempo_participante, graficar_senal_por_fase
+from src.graficos import graficar_senal_tiempo_participante, graficar_senal_por_fase
 from src.graficos import graficar_por_fase
 from src.carga_datos import cargar_datos
 from src.metricas import calcular_fc_desde_datos, calcular_maximo_senal, calcular_minimo_senal, calcular_amplitud_senal, calcular_promedio_senal

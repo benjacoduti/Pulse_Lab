@@ -49,6 +49,92 @@ def graficar_por_fase(df: pd.DataFrame):
 
     axes[0].tick_params(axis='x', rotation=0)
     axes[1].tick_params(axis='x', rotation=0)
-    plt.savefig('graficos_comparacion.png', dpi=300)
+    plt.savefig('./graficos/graficos_comparacion.png', dpi=300)
+    plt.show()
+    plt.close()
+
+def graficar_senal_tiempo_participante(df_participante):
+    """
+    Grafica la señal en función del tiempo para un único participante.
+
+    Parámetros
+    ----------
+    df_participante : pd.DataFrame
+        DataFrame correspondiente a un solo participante.
+        Debe contener las columnas:
+        - 'tiempo'
+        - 'senal'
+    """
+    plt.figure(figsize=(9, 5))
+
+    plt.scatter(
+        df_participante['tiempo'],
+        df_participante['senal'],
+        s=40,
+        alpha=0.8
+    )
+
+    plt.title(
+        'Señal en función del tiempo',
+        fontsize=13,
+        fontweight='bold'
+    )
+
+    plt.xlabel('Tiempo', fontsize=11)
+    plt.ylabel('Señal', fontsize=11)
+
+    plt.grid(
+        True,
+        linestyle='--',
+        alpha=0.5
+    )
+
+    plt.tight_layout()
+    plt.savefig('./graficos/grafico_señal_participante.png', dpi=300)
+    plt.show()
+    plt.close()
+
+def graficar_senal_por_fase(df: pd.DataFrame):
+    ""
+    plt.figure(figsize=(9, 5))
+
+    colores = {
+        "baseline": "#1e3a8a",
+        "tarea": "#7c3aed"
+    }
+
+    box = plt.boxplot(
+        [
+            df[df['fase'] == 'baseline']['senal'],
+            df[df['fase'] == 'tarea']['senal']
+        ],
+        labels=['baseline', 'tarea'],
+        patch_artist=True
+    )
+
+    box['boxes'][0].set_facecolor('#1e3a8a')  # baseline
+    box['boxes'][1].set_facecolor('#b91c1c')  # tarea
+
+    for patch in box['boxes']:
+        patch.set_alpha(0.7)
+
+    plt.title(
+        'Distribución de señal por fase',
+        fontsize=13,
+        fontweight='bold'
+    )
+
+    plt.xlabel('Fase')
+    plt.ylabel('Señal')
+
+    plt.grid(
+        True,
+        linestyle='--',
+        alpha=0.5,
+        axis='y'
+    )
+
+    plt.tight_layout()
+    plt.savefig('./graficos/grafico_señal_por_fase.png', dpi=300)
     plt.show()
     plt.close()

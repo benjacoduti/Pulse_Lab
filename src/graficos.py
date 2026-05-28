@@ -41,7 +41,6 @@ def graficar_por_fase(df: pd.DataFrame):
     axes[1].set_xlabel('Fase')
     axes[1].set_ylabel('Cantidad de Hits')
     axes[1].grid(True, linestyle='--', alpha=0.5, axis='y')
-    # axes[1].xticks(rotation=45)
 
     plt.suptitle(
         'Comparación de Métricas por Condición Experimental',
@@ -49,6 +48,8 @@ def graficar_por_fase(df: pd.DataFrame):
         fontweight='bold'
     )
 
+    axes[0].tick_params(axis='x', rotation=0)
+    axes[1].tick_params(axis='x', rotation=0)
     plt.savefig('graficos_comparacion.png', dpi=300)
     plt.show()
     plt.close()

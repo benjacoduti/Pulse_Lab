@@ -18,13 +18,13 @@ def calcular_frecuencia_cardiaca(picos: list) -> float:
         raise ValueError("El numero de picos debe ser mayor que 2 - Se detecto en calcular_frecuencia_cardiaca")
     else:
         picos = pd.DataFrame(picos)
-        promedio = picos.diff().mean()
+        promedio = picos.diff().mean().iloc[0]
         try:
             return 1 / promedio #La frequencia la calculamos como 1 sobre el promedio de distancia entre picos
         except:
             raise ZeroDivisionError("Se dividió por 0 debido a que la distancia promedio entre picos es 0 - Se detectó en calcular_frecuencia_cardiaca")
             
-def calcular_fc_desde_datos(df) -> float:
+def calcular_fc_desde_datos(df: pd.DataFrame) -> float:
     """
     Recibe una lista de diccionarios correspondientes a cada participante. 
     (Puede calcular las métricas en función de un único participante también, si se pasa el diccionario dentro de una lista)
@@ -44,13 +44,13 @@ def calcular_fc_desde_datos(df) -> float:
     if df is None or df.columns.tolist() != categorias:
         raise ValueError('El DataFrame posee columnas distintas a las requeridas para la normalización - Se detectó en normalizar datos')
     try:
-        picos = detectar_picos_qrs(df['tiempo'].tolist(), df['valor'].tolist(), 0.8,0.3)
+        picos = detectar_picos_qrs(df['tiempo'].tolist(), df['senal'].tolist(), 0.8,0.3)
         fc = calcular_frecuencia_cardiaca(picos)
     except ZeroDivisionError as e:
         raise ZeroDivisionError(e)
     except ValueError as e:
         raise ValueError(e)            
-    return fc
+    return fc.astype('float64')
 
 def calcular_promedio_senal(df) -> float:
     """

@@ -10,7 +10,7 @@ def verificar_carpeta_grafico():
     if not  os.path.exists('./graficos'):
         os.mkdir('./graficos')
 
-def graficar_por_fase(df: pd.DataFrame):
+def graficar_hits_por_fase(df: pd.DataFrame):
     """
     Grafica la cantidad de hits por fase.
 

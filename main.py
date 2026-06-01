@@ -31,9 +31,12 @@ except ZeroDivisionError as e:
 except Exception as e:
     print ("[ERROR INESPERADO] Tipo de error: Exception. Descripción:", e)
 else:
-    print(f'| Se encontro a un participante con el id {participante['id'].iloc[0]}')
-    print(f'| El promedio de señal del participante {participante['id'].iloc[0]} es de: {promedio_participante:.3f}\n'
-          f'| Su máxima señal es de: {max_participante}\n'
-          f'| Su mínima señal es de: {min_participante}\n'
-          f'| Su amplitud es de: {amplitud_participante}\n'
-          f'| Su frequencia es de: {fc_participante:.3f}Hz')
+    id_participante = participante["id"].iloc[0]
+    print(f"| Se encontro a un participante con el id {id_participante}")
+    print(
+        f"| El promedio de señal del participante {id_participante} es de: {promedio_participante:.3f}\n"
+        f"| Su máxima señal es de: {max_participante}\n"
+        f"| Su mínima señal es de: {min_participante}\n"
+        f"| Su amplitud es de: {amplitud_participante}\n"
+        f"| Su frequencia es de: {fc_participante:.3f}Hz"
+    )

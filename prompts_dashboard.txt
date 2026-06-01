@@ -1,0 +1,36 @@
+Bitácotra de Prompts
+
+Prompt semilla enviado a la IA (completar IA)
+
+
+Tienes el rol de un experto en diseño de interfaces en Streamlit.
+
+Tu objetivo es construir una interfaz interactiva con Streamlit que permita articular las funciones del diseño subido y mostrarlas en un dashboard.
+
+El contexto del repositorio es el siguiente:
+
+En este proyecto se analiza la señal de electrocardiograma (ECG) registrada durante la ejecución de una tarea motora, con el objetivo de construir un sistema que permita procesar señales en el tiempo y extraer métricas básicas de activación fisiológica.  
+
+Pulse Lab es un sistema que permite leer y estructurar datos fisiológicos, representar una señal continua en el tiempo, detectar eventos relevantes en la señal y calcular métricas básicas de activación. 
+
+El documento de diseño es el cargado (src/diseño.md). En él se encuentran el modelo de datos (los tipos de datos que se reciben y se devuelven), restricciones, procesamiento y flujo de los datos, la estructura del repositorio, la responsabilidad de los módulos y el manejo de errores.
+
+Necesito que en base a este contexto hagas lo siguiente:
+
+Construir un archivo app.py que contenga código funcional y ejecutable con Streamlit. 
+app.py debe permitir correr la interfaz interactiva
+
+El código debe cumplir las siguientes restricciones:
+
+La aplicación web interactiva debe integrarse de manera limpia sobre los módulos existentes en el repositorio y cumplir obligatoriamente con el siguiente flujo de usuario:
+
+1. Carga Dinámica de Datos: La interfaz debe presentar un componente web 
+(st.file_uploader) que permita al usuario arrastrar y soltar el archivo CSV de su laboratorio.
+
+2. Puente de Validación Defensiva: Se debe llamar a la función encargada de subir archivos. En caso que el archivo viole alguna regla, se debe capturar la excepción (ValueError) y mostrar el mensaje de error de forma vistosa en la interfaz usando el componente nativo de error de Streamlit (st.error), bloqueando el avance del programa. 
+
+3. Despliegue de Indicadores Clave (KPIs): Si el archivo es válido, la interfaz debe mostrar métricas resumen mediante tarjetas de datos (st.metric). 
+
+4. Visualización Interactiva: En el panel principal se deben renderizar de forma limpia los gráficos generados por su script de graficación, aprovechando los contenedores de Streamlit (st.pyplot o st.image). 
+
+

@@ -2,7 +2,7 @@ Bitácotra de Prompts
 
 Prompt semilla enviado a la IA (completar IA)
 
-
+-------------------------------------------------------------------------------------------------
 Tienes el rol de un experto en diseño de interfaces en Streamlit.
 
 Tu objetivo es construir una interfaz interactiva con Streamlit que permita articular las funciones del diseño subido y mostrarlas en un dashboard.
@@ -32,5 +32,5 @@ La aplicación web interactiva debe integrarse de manera limpia sobre los módul
 3. Despliegue de Indicadores Clave (KPIs): Si el archivo es válido, la interfaz debe mostrar métricas resumen mediante tarjetas de datos (st.metric). 
 
 4. Visualización Interactiva: En el panel principal se deben renderizar de forma limpia los gráficos generados por su script de graficación, aprovechando los contenedores de Streamlit (st.pyplot o st.image). 
-
+--------------------------------------------------------------------------------------------------
 

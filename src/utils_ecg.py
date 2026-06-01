@@ -1,3 +1,5 @@
+import os
+
 import numpy as np
 
 def detectar_picos_qrs(tiempos: list, senal: list, umbral: float =0.8, distancia_minima: float =0.3, debug: bool=False):
@@ -160,3 +162,10 @@ def detectar_picos_qrs(tiempos: list, senal: list, umbral: float =0.8, distancia
         plt.show()
 
     return picos
+
+def verificar_script_streamlit():
+    """
+    Verifica que exista la carpeta donde se guardan los gráficos.
+    """
+    if not  os.path.exists('app.py'):
+        raise FileNotFoundError("No existe el script app.py para la ejecucion de streamlit")

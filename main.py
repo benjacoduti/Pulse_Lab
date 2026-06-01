@@ -3,10 +3,12 @@ from src.carga_datos import cargar_datos
 from src.metricas import calcular_fc_desde_datos, calcular_maximo_senal, calcular_minimo_senal, calcular_amplitud_senal, calcular_promedio_senal
 from src.procesamiento_datos import filtrar_por_participante
 from src.graficos import verificar_carpeta_grafico
+from utils_ecg import verificar_script_streamlit
 
 nombre_archivo = 'PulseLab_mock_data.csv'
 
 try:
+    verificar_script_streamlit()
     datos = cargar_datos(nombre_archivo)
 
     verificar_carpeta_grafico()
@@ -28,6 +30,8 @@ except TypeError as e:
     print("[ERROR CRITICO] Tipo de error: TypeError. Descripción:", e)
 except ZeroDivisionError as e:
     print("[ERROR CRITICO] Tipo de error: ZeroDivisionError. Descripción:",e)
+except FileNotFoundError as e:
+    print("[ERROR CRITICO] Tipo de error: FileNotFound. Descripción:", e)
 except Exception as e:
     print ("[ERROR INESPERADO] Tipo de error: Exception. Descripción:", e)
 else:

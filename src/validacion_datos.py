@@ -16,8 +16,8 @@ def validar_df(df: pd.DataFrame) -> pd.DataFrame:
     ValueError
         Si alguna columna contiene valores inválidos.
     """
-    if ~df['senal'].between(0, 2).all():
-        raise ValueError('Existe una señal que no es un numero entero positivo o es mayor a 2 - Se detectó en validar_df')
+    if not df['senal'].between(0, 2).all():
+        raise ValueError('Existe una señal fuera del rango permitido [0, 2] - Se detectó en validar_df')
     try:
         validar_columna_entero_positivo(df, "id")
         validar_columna_mayor_a_num(df, 'tiempo', 0)

@@ -58,7 +58,7 @@ def calcular_fc_desde_datos(df: pd.DataFrame) -> float:
         raise ZeroDivisionError(e)
     except ValueError as e:
         raise ValueError(e)            
-    return fc.astype('float64')
+    return float(fc)
 
 def calcular_promedio_senal(df: pd.DataFrame) -> float:
     """

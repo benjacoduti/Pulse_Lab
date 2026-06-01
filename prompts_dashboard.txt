@@ -1,6 +1,6 @@
 Bitácotra de Prompts
 
-Prompt semilla enviado a la IA (completar IA)
+Prompt semilla enviado a Chat-GPT:
 
 -------------------------------------------------------------------------------------------------
 Tienes el rol de un experto en diseño de interfaces en Streamlit.
@@ -34,3 +34,14 @@ La aplicación web interactiva debe integrarse de manera limpia sobre los módul
 4. Visualización Interactiva: En el panel principal se deben renderizar de forma limpia los gráficos generados por su script de graficación, aprovechando los contenedores de Streamlit (st.pyplot o st.image). 
 --------------------------------------------------------------------------------------------------
 
+Segundo Prompt:
+
+El archivo contiene imports no usados, se necesita que la generación de gráficos utilice las funciones en el archivo graficos.py
+
+--------------------------------------------------------------------------------------------------
+
+Reflexión técnica
+
+Para que la IA resolviera todo lo pedido en dos prompts, utilizamos la estructura ROCA para el prompt semilla.
+Le pasamos a la IA un rol, objetivo, contexto y acción específica para que realice, junto con documentación del diseño del trabajo. También le pasamos restricciones relacionadas con la consigna y lo que debía cumplir efectivamente el código.
+En el segundo prompt no fuimos rigurosos, debido a que las modificaciones eran mínimas y el chat ya poseía el contexto del trabajo y los cambios que debía realizar.

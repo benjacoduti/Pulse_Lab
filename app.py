@@ -2,10 +2,8 @@ import tempfile
 from pathlib import Path
 
 import streamlit as st
-import matplotlib.pyplot as plt
 
 from src.carga_datos import cargar_datos
-from src.procesamiento_datos import filtrar_por_participante
 from src.metricas import (
     calcular_promedio_senal,
     calcular_minimo_senal,
@@ -14,9 +12,9 @@ from src.metricas import (
     calcular_fc_desde_datos,
 )
 from src.graficos import (
+    verificar_carpeta_grafico,
     graficar_hits_por_fase,
-    graficar_senal_tiempo_participante,
-    graficar_senal_por_fase,
+    graficar_senal_por_fase
 )
 
 
@@ -44,7 +42,7 @@ try:
     with tempfile.NamedTemporaryFile(delete=False, suffix=".csv") as tmp:
         tmp.write(archivo.getbuffer())
         ruta_temporal = tmp.name
-
+    
     df = cargar_datos(ruta_temporal)
 
 except ValueError as error:
@@ -58,9 +56,10 @@ except Exception as error:
 
 st.success("Archivo cargado y validado correctamente.")
 
+verificar_carpeta_grafico()
+
 st.subheader("Vista previa de los datos")
 st.dataframe(df.head())
-
 
 st.subheader("Selección de participante")
 
@@ -103,70 +102,19 @@ col5.metric("Frecuencia cardíaca", round(frecuencia, 2))
 
 st.subheader("Visualizaciones")
 
-tab1, tab2, tab3 = st.tabs([
-    "Señal del participante",
+tab1, tab2 = st.tabs([
     "Señal por fase",
     "Hits por fase"
 ])
 
 with tab1:
-    st.write(f"Señal ECG del participante {id_seleccionado}")
-
-    fig, ax = plt.subplots(figsize=(9, 5))
-    ax.plot(
-        df_participante["tiempo"],
-        df_participante["senal"],
-        linewidth=2
-    )
-    ax.set_title(f"Señal en el tiempo - Participante {id_seleccionado}")
-    ax.set_xlabel("Tiempo")
-    ax.set_ylabel("Señal")
-    ax.grid(True, linestyle="--", alpha=0.5)
-
-    st.pyplot(fig)
-    plt.close(fig)
+    graficar_senal_por_fase(df)
+    
+    ruta_grafico = Path('graficos') / 'grafico_senal_por_fase.png'
+    st.image(str(ruta_grafico), caption = 'Distribución de señal por fase')
 
 with tab2:
-    st.write("Distribución de señal por fase")
-
-    fig, ax = plt.subplots(figsize=(8, 5))
-
-    ax.boxplot(
-        [
-            df[df["fase"] == "baseline"]["senal"],
-            df[df["fase"] == "tarea"]["senal"]
-        ],
-        labels=["baseline", "tarea"],
-        patch_artist=True
-    )
-
-    ax.set_title("Distribución de señal por fase")
-    ax.set_xlabel("Fase")
-    ax.set_ylabel("Señal")
-    ax.grid(True, linestyle="--", alpha=0.5, axis="y")
-
-    st.pyplot(fig)
-    plt.close(fig)
-
-with tab3:
-    st.write("Cantidad de hits por fase")
-
-    hits_por_fase = df.groupby("fase")["hit"].sum()
-
-    fig, ax = plt.subplots(figsize=(8, 5))
-
-    hits_por_fase.plot(
-        kind="bar",
-        ax=ax,
-        edgecolor="black",
-        alpha=0.8
-    )
-
-    ax.set_title("Cantidad de hits por fase")
-    ax.set_xlabel("Fase")
-    ax.set_ylabel("Cantidad de hits")
-    ax.tick_params(axis="x", rotation=0)
-    ax.grid(True, linestyle="--", alpha=0.5, axis="y")
-
-    st.pyplot(fig)
-    plt.close(fig)
+    graficar_hits_por_fase(df)
+    
+    ruta_grafico = Path('graficos') / 'grafico_hits_por_fase.png'
+    st.image(str(ruta_grafico), caption = 'Cantidad de hits por fase')

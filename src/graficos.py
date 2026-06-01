@@ -31,7 +31,7 @@ def graficar_hits_por_fase(df: pd.DataFrame):
 
     cant_hits.plot(
         kind='bar',
-        color='#1e3a8a',
+        color=('#1e3a8a','#b91c1c'),
         edgecolor='black',
         alpha=0.8
     )
@@ -42,45 +42,45 @@ def graficar_hits_por_fase(df: pd.DataFrame):
     plt.xticks(rotation=0)
     plt.grid(True, linestyle='--', alpha=0.5, axis='y')
     plt.tight_layout()
-    plt.savefig('./graficos/hits_por_fase.png', dpi=300)
+    plt.savefig('./graficos/grafico_hits_por_fase.png', dpi=300)
     plt.close()
 
-def graficar_senal_tiempo_participante(df_participante: pd.DataFrame):
-    """
-    Grafica la señal en función del tiempo para un único participante.
-    Parameters
-    ----------
-    df_participante : pd.DataFrame
-        DataFrame con los registros de tiempo y señal del participante.
-    """
-    id_participante = df_participante['id'].iloc[0]
-    plt.figure(figsize=(9, 5))
+# def graficar_senal_tiempo_participante(df_participante: pd.DataFrame):
+#     """
+#     Grafica la señal en función del tiempo para un único participante.
+#     Parameters
+#     ----------
+#     df_participante : pd.DataFrame
+#         DataFrame con los registros de tiempo y señal del participante.
+#     """
+#     id_participante = df_participante['id'].iloc[0]
+#     plt.figure(figsize=(9, 5))
 
-    plt.scatter(
-        df_participante['tiempo'],
-        df_participante['senal'],
-        s=40,
-        alpha=0.8
-    )
+#     plt.scatter(
+#         df_participante['tiempo'],
+#         df_participante['senal'],
+#         s=40,
+#         alpha=0.8
+#     )
 
-    plt.title(
-        f'Señal en función del tiempo del participante {id_participante}',
-        fontsize=13,
-        fontweight='bold'
-    )
+#     plt.title(
+#         f'Señal en función del tiempo del participante {id_participante}',
+#         fontsize=13,
+#         fontweight='bold'
+#     )
 
-    plt.xlabel('Tiempo', fontsize=11)
-    plt.ylabel('Señal', fontsize=11)
+#     plt.xlabel('Tiempo', fontsize=11)
+#     plt.ylabel('Señal', fontsize=11)
 
-    plt.grid(
-        True,
-        linestyle='--',
-        alpha=0.5
-    )
+#     plt.grid(
+#         True,
+#         linestyle='--',
+#         alpha=0.5
+#     )
 
-    plt.tight_layout()
-    plt.savefig(f'./graficos/grafico_señal_participante_{id_participante}.png', dpi=300)
-    plt.close()
+#     plt.tight_layout()
+#     plt.savefig(f'./graficos/grafico_señal_participante_{id_participante}.png', dpi=300)
+#     plt.close()
 
 def graficar_senal_por_fase(df: pd.DataFrame):
     """

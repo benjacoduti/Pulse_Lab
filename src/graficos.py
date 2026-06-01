@@ -92,11 +92,6 @@ def graficar_senal_por_fase(df: pd.DataFrame):
     """
     plt.figure(figsize=(9, 5))
 
-    colores = {
-        "baseline": "#1e3a8a",
-        "tarea": "#7c3aed"
-    }
-
     box = plt.boxplot(
         [
             df[df['fase'] == 'baseline']['senal'],

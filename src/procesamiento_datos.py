@@ -1,6 +1,6 @@
 import pandas as pd
 
-from validacion_datos import validar_columna_entero_positivo
+from src.validacion_datos import validar_columna_entero_positivo
 
 
 def pedir_id(df: pd.DataFrame) -> pd.DataFrame:

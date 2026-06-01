@@ -52,6 +52,7 @@ def abrir_archivo(nombre_archivo: str) -> pd.DataFrame:
 
     try:
         df = pd.read_csv(ruta, header=None)
+    except FileNotFoundError:
         raise FileNotFoundError("No se encuentra el archivo - Se detecto en abrir_archivo")
     except pd.errors.ParserError as error:
         raise ValueError(

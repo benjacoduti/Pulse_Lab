@@ -40,8 +40,12 @@ El archivo contiene imports no usados, se necesita que la generación de gráfic
 
 --------------------------------------------------------------------------------------------------
 
+Tercer Prompt:
+
+Al implementar st.image, la generacion y muestra de graficos falla, se necesita verificar que el formato de los graficos generados sea compatible con st.image y que existan los archivos.
+
 Reflexión técnica
 
 Para que la IA resolviera todo lo pedido en dos prompts, utilizamos la estructura ROCA para el prompt semilla.
 Le pasamos a la IA un rol, objetivo, contexto y acción específica para que realice, junto con documentación del diseño del trabajo. También le pasamos restricciones relacionadas con la consigna y lo que debía cumplir efectivamente el código.
-En el segundo prompt no fuimos rigurosos, debido a que las modificaciones eran mínimas y el chat ya poseía el contexto del trabajo y los cambios que debía realizar.
+En el segundo y tercer prompt no fuimos rigurosos, debido a que las modificaciones eran mínimas y el chat ya poseía el contexto del trabajo y los cambios que debía realizar.

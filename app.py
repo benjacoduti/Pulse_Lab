@@ -1,3 +1,4 @@
+import os
 import tempfile
 from pathlib import Path
 
@@ -109,12 +110,20 @@ tab1, tab2 = st.tabs([
 
 with tab1:
     graficar_senal_por_fase(df)
-    
-    ruta_grafico = Path('graficos') / 'grafico_senal_por_fase.png'
-    st.image(str(ruta_grafico), caption = 'Distribución de señal por fase')
+
+    ruta_grafico = Path(os.getcwd()) / 'graficos' / 'grafico_señal_por_fase.png'
+
+    if ruta_grafico.exists():
+        st.image(str(ruta_grafico), caption="Distribución de señal por fase")
+    else:
+        st.error(f"No se encontró el gráfico esperado: {ruta_grafico}")
 
 with tab2:
     graficar_hits_por_fase(df)
     
-    ruta_grafico = Path('graficos') / 'grafico_hits_por_fase.png'
-    st.image(str(ruta_grafico), caption = 'Cantidad de hits por fase')
+    ruta_grafico = Path(os.getcwd()) / 'graficos' / 'grafico_hits_por_fase.png'
+
+    if ruta_grafico.exists():
+        st.image(str(ruta_grafico), caption="Distribución de señal por fase")
+    else:
+        st.error(f"No se encontró el gráfico esperado: {ruta_grafico}")

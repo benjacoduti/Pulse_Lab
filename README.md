@@ -13,13 +13,20 @@ Análisis de datos y calculo de métricas con información ECG
 ##### Errores y validación
 
 
-En el parseo de datos, al momento de castear al tipo correcto, se utiliza un bloque try except para levantar errores de casteo especificos.
-Los tipos de errores (ValueError) considerados son:
--) Una columna de dato del participante vacia
--) Tipo de dato str en un casillero int/float
--) Valores negativos o no correspondientes con el dato solicitado segun su casillero
--) Momento en el que el promedio de la distancia entre los picos es 0 y al calcular la frecuencia cardiaca (uno sobre el promedio) causa una division por cero
-Se informa cual es el tipo de dato que esta en falla.
+En la carga de datos se utiliza pandas para leer el CSV, normalizar los tipos de datos y validar la información antes de calcular métricas.
+Los errores considerados son:
+- Archivo inexistente o nombre de archivo no válido
+- CSV inválido o con columnas distintas a las requeridas
+- Campos vacíos o valores nulos
+- Tipo de dato str en un casillero int/float/bool
+- Valores negativos o no correspondientes con el dato solicitado segun su casillero
+- Categorías no permitidas en fase, condición experimental o hit
+- Tiempos no crecientes para un mismo participante
+- Cantidad insuficiente de picos QRS para calcular frecuencia cardíaca
+- Momento en el que el promedio de la distancia entre los picos es 0 y al calcular la frecuencia cardiaca (uno sobre el promedio) causa una division por cero
+
+Se informa cual es el tipo de dato o validación que esta en falla.
+En la interfaz web, los errores de validación se muestran con `st.error` y el programa se detiene para evitar mostrar resultados incorrectos.
 
 
 
@@ -58,11 +65,6 @@ Las funciones que deberíamos cambiar para la implementación de pandas son:
 Estas funciones deberían cambiar ya que, al operar con un tipo de dato distinto (dataframes y series en lugar de listas y diccionarios) es necesario cambiar la forma de iterar, acceder a valores y mostrarlos. A su vez, se debería cambiar el docstring de esas funciones (al menos en cuanto a los parámetros y retornos)
 
 
-
-Las únicas funciones que no necesitan un cambio son aquellas que reciben una lista y no datos (el df), ya que simplemente se puede cambiar el main para que esas funciones reciban una lista en lugar de una serie y funcionen correctamente.
-
-
-
 ##### Guía de Ejecución de la Interfaz Web
 
 
@@ -82,7 +84,6 @@ Una vez instalado, se puede correr la interfaz a través de utilizar el siguient
 
 
 streamlit run app.py
-
 
 
 

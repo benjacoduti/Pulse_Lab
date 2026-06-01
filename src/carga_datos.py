@@ -1,176 +1,140 @@
-from src.validacion_datos import validar_tiempos_ordenados, validar_linea
+import os
+from pathlib import Path
+import pandas as pd
+from src.validacion_datos import validar_df, validar_columna_categorias
 
-# Abrir Archivo
-def abrir_archivo(ruta:str)->list:
+
+def resolver_ruta_datos(nombre_archivo: str) -> Path:
     """
-    Recibe la ruta de un archivo;
-    Abre el archivo para poder leerlo;
-    Luego cierra el archivo y devuelve las líneas
-
-    El archivo es de tipo csv y contiene todos los datos ordenados, sin
-    ninguno faltante
-
+    Resuelve la ruta desde donde se debe cargar el archivo de datos.
     Parameters
     ----------
-    ruta : str
-        Ruta en la que se encuentra el archivo que se quiere abrir
-
+    nombre_archivo : str
+        Nombre o ruta del archivo de datos.
     Returns
     -------
-    lineas : list
-        Lista que contiene strings correspondientes a las filas del archivo
-        
-    Raises: ValueError si la ruta del archivo no es válida;
-            FileNotFoundError si no se encuentra el archivo; 
-            Exception para captar todo error posible
-
+    Path
+        Ruta absoluta o relativa resuelta para el archivo.
+    Raises
+    ------
+    ValueError
+        Si el nombre del archivo es nulo o está vacío.
     """
-    if ruta is None or ruta == "":
-        raise ValueError("La ruta de archivo no es valido - Se detectó en abrir_archivo")
+    if nombre_archivo is None or str(nombre_archivo).strip() == "":
+        raise ValueError("El nombre del archivo no es valido - Se detecto en abrir_archivo")
+
+    ruta = Path(nombre_archivo)
+    if ruta.is_absolute() or ruta.exists():
+        return ruta
+
+    return Path(os.getcwd()) / "datos" / nombre_archivo
+
+
+def abrir_archivo(nombre_archivo: str) -> pd.DataFrame:
+    """
+    Lee un archivo CSV de datos ECG y asigna las columnas esperadas.
+    Parameters
+    ----------
+    nombre_archivo : str
+        Nombre o ruta del archivo CSV a leer.
+    Returns
+    -------
+    pd.DataFrame
+        Datos cargados con las columnas del sistema.
+    Raises
+    ------
+    FileNotFoundError
+        Si no se encuentra el archivo indicado.
+    ValueError
+        Si el nombre del archivo no es válido o el CSV no puede parsearse.
+    """
+    ruta = resolver_ruta_datos(nombre_archivo)
+
     try:
-        archivo = open(ruta,"r")
-        lineas = archivo.readlines()
-        archivo.close()
-    except (FileNotFoundError, Exception):
-        raise FileNotFoundError("No se encuentra el archivo - Se detectó en abrir_archivo")
+        df = pd.read_csv(ruta, header=None)
+        raise FileNotFoundError("No se encuentra el archivo - Se detecto en abrir_archivo")
+    except pd.errors.ParserError as error:
+        raise ValueError(
+            f"No se pudo leer el CSV {nombre_archivo}: {error} - Se detecto en abrir_archivo"
+        )
     else:
-        return lineas
+        df.columns = ['id', 'tiempo', 'senal', 'fase', 'condicion_experimental', 'hit']
+        return df
 
-# Parsear Datos
-def parsear_linea(linea:str)->list:
+def normalizar_datos(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Recibe una línea de un archivo y la devuelve modificada;
-    Se encarga de eliminar impurezas y de separar la línea en campos 
-
+    Normaliza los tipos de datos requeridos por el sistema.
     Parameters
     ----------
-    linea : str
-        Línea que será parseada
-
+    df : pd.DataFrame
+        DataFrame con las columnas esperadas de datos ECG.
     Returns
     -------
-    linea_parseada : list
-        Lista que contiene los datos de la lista parseada
-        
-    Raises: ValueError si la línea no tiene las columnas requeridas
-            Type Error si no se puede castear los datos correctamente
-
+    pd.DataFrame
+        Copia del DataFrame con los tipos normalizados.
+    Raises
+    ------
+    ValueError
+        Si el DataFrame no tiene las columnas esperadas o contiene valores inválidos.
+    TypeError
+        Si algún dato no puede convertirse al tipo requerido.
     """
-    linea = linea.strip("\n")
-    linea_parseada = linea.split(",") #!!! split con (",") o (";") ?
-
-    if len(linea_parseada) != 6:
-        raise ValueError("La linea no contiene las 6 columnas requeridas - Se detecto en parsear_linea")
-
-    dato = None
-    try:
-        dato = "id"
-        linea_parseada[0] = int(linea_parseada[0])
-
-        dato = "tiempo"
-        linea_parseada[1] = float(linea_parseada[1])
-
-        dato = "señal"
-        linea_parseada[2] = float(linea_parseada[2])
-
-        dato = "fase"
-        linea_parseada[3] = str(linea_parseada[3])
-
-        dato = "condición experimental"
-        linea_parseada[4] = str(linea_parseada[4])
-
-        dato = "hit"
-        if linea_parseada[5] == "True":
-            linea_parseada[5] = True
-        elif linea_parseada[5] == "False":
-            linea_parseada[5] = False
-        else:
-            raise TypeError
-
-    except TypeError:
-        raise TypeError(f"Error de tipo en {dato} - Se detectó en pasear_linea")
-    else:
-        return linea_parseada
-
-# Cargar Datos
-def cargar_datos(ruta:str)->list:
-    """
-    Recibe la ruta de un archivo y se la envía a la función abrir_archivo para que extraiga
-    la información;
-    Luego, por cada línea de información, llama a la función parsear_linea para aplicar un parseo 
-    Posteriorimente, llama a validar_linea que devuelve los datos validados y casteados.
-    Finalmente, genera un diccionario con un registro de los participantes
-    por cada participante con distinto id, y lo actualiza hasta finalizar el recorrido
-    de las líneas del archivo.
-    Guarda los registros de los participantes en una lista y la devuelve
-
-    Parameters
-    ----------
-    ruta : str
-        Ruta con la que se abrirá el archivo del cual se extraerán los datos
-
-    Returns
-    -------
-    datos : list
-        Lista que contiene diccionarios con los datos divididos por participantes
-        
-    Raises: propaga errores de funciones como abrir_archivo, parsear_linea y funciones de validación
-
-    """
-    datos = []
+    categorias = ['id','tiempo','senal','fase','condicion_experimental','hit']
     
+    if df is None or df.columns.tolist() != categorias:
+        raise ValueError('El DataFrame posee columnas distintas a las requeridas para la normalización - Se detectó en normalizar datos')
+    
+    datos = df.copy()
     try:
-        lineas = abrir_archivo(ruta)
-    except (FileNotFoundError, Exception) as e:
+        datos["id"] = pd.to_numeric(datos["id"]).astype("int64")
+        datos["tiempo"] = pd.to_numeric(datos["tiempo"]).astype("float64")
+        datos["senal"] = pd.to_numeric(datos["senal"]).astype("float64")
+        datos["fase"] = datos["fase"].astype("string")
+        datos["condicion_experimental"] = datos["condicion_experimental"].astype("string")
+        validar_columna_categorias(datos, [False, True], 'hit')
+        datos["hit"] = datos["hit"].map({"True": True, "False": False}).astype("bool")
+    except ValueError as e:
+        raise ValueError(f'{e} - Se detecto normalizar_datos')
+    except TypeError as e:
+        raise TypeError(f'{e} - Se detecto normalizar_datos')
+    else:
+        return datos
+
+def cargar_datos(nombre_archivo: str) -> pd.DataFrame:
+    """
+    Carga, valida y normaliza un archivo CSV de datos ECG.
+    Parameters
+    ----------
+    nombre_archivo : str
+        Nombre o ruta del archivo CSV a cargar.
+    Returns
+    -------
+    pd.DataFrame
+        Datos validados y normalizados.
+    Raises
+    ------
+    FileNotFoundError
+        Si no se encuentra el archivo indicado.
+    ValueError
+        Si el archivo contiene valores nulos o datos inválidos.
+    TypeError
+        Si algún dato no puede convertirse al tipo requerido.
+    Exception
+        Si ocurre un error no contemplado durante la carga.
+    """
+    try:
+        df = abrir_archivo(nombre_archivo)
+        if df.isna().any().any():
+            raise ValueError("El archivo contiene campos vacíos o valores nulos (NaN). - Se detecto en cargar_datos")
+        datos = normalizar_datos(df)
+        datos_validos = validar_df(datos)
+    except FileNotFoundError as e:
         raise FileNotFoundError(e)
     except ValueError as e:
         raise ValueError(e)
-
-    for linea in lineas:
-        try:
-            linea_parseada = parsear_linea(linea)
-            linea_valida = validar_linea(linea_parseada)
-        except ValueError as e: 
-            raise ValueError(e)
-        except TypeError as e:
-            raise TypeError(e)
-        else:
-    
-            i_d = (linea_valida[0])
-            tiempo = linea_valida[1]
-            valor = linea_valida[2]
-            fase = linea_valida[3]
-            condicion_experimental = linea_valida[4]
-            hit = linea_valida[5]
-    
-            registro_participante = None
-    
-            for p in datos:
-                if p["id"] == i_d:
-                    registro_participante = p
-                    break
-    
-            #Creación del diccionario
-            if registro_participante is None:
-                registro_participante = {
-                    "id": i_d,
-                    "tiempo": [],
-                    "valor": [],
-                    "fase": [],
-                    "condicion_experimental": [],
-                    "hit": []
-                }
-                datos.append(registro_participante)
-    
-            # Actualización del diccionario
-            registro_participante["tiempo"].append(tiempo)
-            registro_participante["valor"].append(valor)
-            registro_participante["fase"].append(fase)
-            registro_participante["condicion_experimental"].append(condicion_experimental)
-            registro_participante["hit"].append(hit)
-    #Validar que los tiempos de cada participante esten ordenados
-    try:
-        validar_tiempos_ordenados(datos)
-    except ValueError as e:
-        raise ValueError(e)
-    return datos
+    except TypeError as e:
+        raise TypeError(e)
+    except Exception as e:
+        raise Exception(e)
+    else:
+        return datos_validos

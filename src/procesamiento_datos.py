@@ -1,37 +1,52 @@
-from src.validacion_datos import pedir_id
+import pandas as pd
 
-def filtrar_por_participante(datos: list) -> dict:
+from src.validacion_datos import validar_columna_entero_positivo
+
+
+def pedir_id(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Recibe una lista con registros de participantes en donde se desea buscar;
-    filtra al participante cuyo id sea igual al ingresado por consola
-
+    Pide al usuario por consola un id que debe ser un número entero positivo.
     Parameters
     ----------
-    datos : list
-        Lista de registros en donde buscar el participante
-        
+    df : pd.DataFrame
+        DataFrame con los registros de participantes.
     Returns
     -------
-    dict
-        Registro del participante buscado
-        
+    pd.DataFrame
+        Registros del participante cuyo id fue ingresado.
+    """
+    while True:
+        try:
+            i_d = int(input("Ingrese el id del participante: "))
+            data = pd.DataFrame({'Id ingresado': [i_d]})
+            if validar_columna_entero_positivo(data, "Id ingresado"):
+                participante = df[df['id'] == i_d]
+                if participante.size == 0:
+                    print(f'No se encontró participante alguno con el id ingresado {i_d} - Se detectó en filtrar_por_participante')
+                else:
+                    return participante
+        except ValueError:
+            print('Error, el id del participante debe ser un numero entero positivo')
+
+def filtrar_por_participante(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Filtra los registros del participante cuyo id se ingresa por consola.
+    Parameters
+    ----------
+    df : pd.DataFrame
+        DataFrame con los registros de participantes.
+    Returns
+    -------
+    pd.DataFrame
+        Registros del participante seleccionado.
     Raises
     ------
     ValueError
-        si no se encuentra en la lista de registros
-    Exception
-        No hay participante con ese id ingresado
+        Si ocurre un error de validación al pedir el id.
     """
-    i=0
-    
-    id_participante = pedir_id()
-        
-    while i <len(datos): 
-        
-        if datos[i]["id"] == id_participante:
-            return datos[i]
-        else:
-            i += 1
-    
-    raise Exception("No se encontró participante alguno con el id ingresado - Se detectó en filtrar_por_participante")
-
+    try:
+        participante = pedir_id(df)
+    except ValueError as e:
+        raise ValueError(e)
+    else:
+        return participante

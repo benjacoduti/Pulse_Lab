@@ -1,30 +1,28 @@
 import numpy as np
 
-def detectar_picos_qrs(tiempos, senal, umbral=0.8, distancia_minima=0.3, debug=False):
+def detectar_picos_qrs(tiempos: list, senal: list, umbral: float =0.8, distancia_minima: float =0.3, debug: bool=False):
     """
-    Detecta picos QRS en una señal de ECG de forma robusta
-
-    La función:
-    1. Calcula la derivada de la señal
-    2. Obtiene una señal de energía (derivada al cuadrado)
-    3. Suaviza la energía
-    4. Calcula un umbral adaptativo local
-    5. Detecta regiones donde hay actividad tipo QRS
-    6. Busca el pico real en la señal original
-
-    Args:
-    - tiempos (list): tiempos en segundos
-    - senal (list): valores de ECG
-    - umbral (float): controla la sensibilidad del detector de picos. Default = 0.8
-    - distancia_minima (float): tiempo mínimo entre picos (segundos). Default = 0.3
-    - debug (bool): si True, muestra gráfico de energía y umbral. Default = False
-
-    Return:
-    - list: tiempos donde se detectan picos QRS (en segundos)
-
-    Errores:
-    - ValueError: si las listas están vacías, tienen distinto largo, el tiempo no está ordenado o
-      es muy corto para detectar picos
+    Detecta picos QRS en una señal ECG.
+    Parameters
+    ----------
+    tiempos : list
+        Tiempos de la señal en segundos.
+    senal : list
+        Valores de la señal ECG.
+    umbral : float
+        Sensibilidad usada para calcular el umbral local.
+    distancia_minima : float
+        Tiempo mínimo permitido entre picos detectados.
+    debug : bool
+        Indica si se muestra un gráfico auxiliar de energía y umbral.
+    Returns
+    -------
+    list
+        Tiempos donde se detectan picos QRS.
+    Raises
+    ------
+    ValueError
+        Si las listas tienen distinto largo, están vacías o el registro es demasiado corto.
     """
 
     # ---------------------------

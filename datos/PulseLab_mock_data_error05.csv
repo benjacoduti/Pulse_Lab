@@ -23,7 +23,7 @@
 4,0.0,0.15,baseline,cooperacion,False
 4,0.2,1.10,baseline,cooperacion,true
 4,0.4,0.17,baseline,cooperacion,False
-4,60.0,0.30,tarea,cooperacion,False
+4,60.0,0.30,tarea,cooperacion,0
 4,60.2,1.20,tarea,cooperacion,True
 4,60.4,1.25,tarea,cooperacion,True
 4,60.6,0.35,tarea,cooperacion,False
